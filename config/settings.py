@@ -37,11 +37,15 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    # local apps:
     'alarm_systems.apps.AlarmSystemsConfig',
 
 
-    # Other apps:
+    # 3rd party apps:
     'phonenumber_field',
+    'crispy_forms',
+    'crispy_bootstrap5'
 
 ]
 
@@ -127,3 +131,6 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+CRISPY_ALLOWED_TEMPLATES_PACKS = "bootstrap5"
+CRISPY_TEMPLATE_PACK = 'bootstrap5'
