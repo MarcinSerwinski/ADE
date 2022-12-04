@@ -27,7 +27,7 @@ class System(models.Model):
 
 class SystemType(models.Model):
     name = models.CharField(max_length=100)
-    system = models.ForeignKey('System', on_delete=models.CASCADE)
+
 
 class Camera(models.Model):
     location_types = [(1, 'Zewnętrzna'),
