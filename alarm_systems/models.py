@@ -15,7 +15,6 @@ class Customer(models.Model):
 class Location(models.Model):
     name = models.CharField(max_length=100)
     address = models.CharField(max_length=255)
-    email = models.EmailField()
     description = models.TextField(null=True)
     customer = models.ForeignKey('Customer', on_delete=models.CASCADE)
 
@@ -28,7 +27,7 @@ class System(models.Model):
 
 class SystemType(models.Model):
     name = models.CharField(max_length=100)
-
+    system = models.ForeignKey('System', on_delete=models.CASCADE)
 
 class Camera(models.Model):
     location_types = [(1, 'Zewnętrzna'),
@@ -39,14 +38,14 @@ class Camera(models.Model):
     serial_number = models.CharField(max_length=100)
     placement = models.IntegerField(choices=location_types, default=1)
     description = models.TextField()
-    system_types = models.ManyToManyField(SystemType)
+    system_types = models.ManyToManyField('SystemType')
     registrator = models.ForeignKey('Registrator', on_delete=models.CASCADE)
 
 
 class Registrator(models.Model):
     name = models.CharField(max_length=100)
     description = models.TextField()
-
+    system_types = models.ManyToManyField('SystemType')
 
 class MotionSensor(models.Model):
     location_types = [(1, 'Zewnętrzny'),
@@ -55,11 +54,11 @@ class MotionSensor(models.Model):
     name = models.CharField(max_length=100)
     placement = models.IntegerField(choices=location_types, default=1)
     description = models.TextField()
-    system_types = models.ManyToManyField(SystemType)
+    system_types = models.ManyToManyField('SystemType')
     central = models.ForeignKey('Central', on_delete=models.CASCADE)
 
 
 class Central(models.Model):
     name = models.CharField(max_length=100)
     description = models.TextField()
-    system_types = models.ManyToManyField(SystemType)
+    system_types = models.ManyToManyField('SystemType')
