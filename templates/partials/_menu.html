@@ -10,6 +10,18 @@
                 <li class="nav-item">
                     <a class="nav-link active" aria-current="page" href="{% url 'alarm_systems:home' %}">Home</a>
                 </li>
+                {% if user.is_authenticated %}
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="{% url 'users:logout_view' %}">Logout {{ user }}</a>
+                    </li>
+                {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="{% url 'users:login_view' %}">Login</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="{% url 'users:registration_view' %}">Registration</a>
+                    </li>
+                {% endif %}
             </ul>
         </div>
     </div>
