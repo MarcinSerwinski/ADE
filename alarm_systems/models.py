@@ -15,7 +15,7 @@ class Customer(models.Model):
 class Location(models.Model):
     name = models.CharField(max_length=100)
     address = models.CharField(max_length=255)
-    description = models.TextField(null=True)
+    description = models.TextField(blank=True, null=True)
     customer = models.ForeignKey('Customer', on_delete=models.CASCADE)
 
 
@@ -23,6 +23,7 @@ class System(models.Model):
     location = models.ForeignKey('Location', on_delete=models.CASCADE)
     date_installed = models.DateField(auto_now_add=True)
     last_check = models.DateTimeField(auto_now=True)
+    system_type = models.ForeignKey('SystemType', on_delete=models.CASCADE)
 
 
 class SystemType(models.Model):
@@ -35,30 +36,35 @@ class Camera(models.Model):
 
     brand = models.CharField(max_length=100)
     model = models.CharField(max_length=100)
-    serial_number = models.CharField(max_length=100)
+    serial_number = models.CharField(max_length=100, unique=True)
     placement = models.IntegerField(choices=location_types, default=1)
-    description = models.TextField()
-    system_types = models.ManyToManyField('SystemType')
+    description = models.TextField(blank=True, null=True)
     registrator = models.ForeignKey('Registrator', on_delete=models.CASCADE)
 
 
 class Registrator(models.Model):
-    name = models.CharField(max_length=100)
-    description = models.TextField()
-    system_types = models.ManyToManyField('SystemType')
+    brand = models.CharField(max_length=100)
+    model = models.CharField(max_length=100)
+    serial_number = models.CharField(max_length=100, unique=True)
+    description = models.TextField(blank=True, null=True)
+    system_types = models.ForeignKey('System', on_delete=models.CASCADE)
+
 
 class MotionSensor(models.Model):
     location_types = [(1, 'Zewnętrzny'),
                       (2, 'Wewnętrzny')]
 
-    name = models.CharField(max_length=100)
+    brand = models.CharField(max_length=100)
+    model = models.CharField(max_length=100)
+    serial_number = models.CharField(max_length=100, unique=True)
     placement = models.IntegerField(choices=location_types, default=1)
-    description = models.TextField()
-    system_types = models.ManyToManyField('SystemType')
+    description = models.TextField(blank=True, null=True)
     central = models.ForeignKey('Central', on_delete=models.CASCADE)
 
 
 class Central(models.Model):
-    name = models.CharField(max_length=100)
-    description = models.TextField()
-    system_types = models.ManyToManyField('SystemType')
+    brand = models.CharField(max_length=100)
+    model = models.CharField(max_length=100)
+    serial_number = models.CharField(max_length=100, unique=True)
+    description = models.TextField(blank=True, null=True)
+    system_types = models.ForeignKey('System', on_delete=models.CASCADE)
