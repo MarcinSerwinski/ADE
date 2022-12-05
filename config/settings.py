@@ -26,7 +26,7 @@ environ.Env.read_env(os.path.join(BASE_DIR, 'env', '.env'))
 SECRET_KEY = os.environ.get('DJ_SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = int(os.environ.get('DJ_DEBUG', default=0))
 
 ALLOWED_HOSTS = []
 
