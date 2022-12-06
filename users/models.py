@@ -1,7 +1,7 @@
 import os
 
 from django.contrib.auth.base_user import AbstractBaseUser, BaseUserManager
-from django.contrib.auth.models import PermissionsMixin, Group
+from django.contrib.auth.models import PermissionsMixin, Group, Permission
 from django.db import models
 
 
@@ -28,12 +28,13 @@ class AccountManager(BaseUserManager):
     def create_superuser(self, email, fullname, password=None):
         user = self.create_user(email=self.normalize_email(email), fullname=fullname,
                                 password=password)
-
+        permission = Permission.objects.get(name='Can add camera')
         user.is_admin = True
         user.is_staff = True
         user.is_active = True
         user.is_superuser = True
-
+        user.is_operator = True
+        user.user_permissions.add(permission)
         user.save(using=self._db)
 
         return user
