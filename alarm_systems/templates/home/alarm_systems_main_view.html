@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Alarm Systems
+{% endblock %}
+
+
+{% block container %}
+<div class="schedules-content">
+    <a href="#" class="btn btn-dark rounded-0 text-light m-1">Add new customer</a>
+        <table class="table border-bottom">
+            <thead>
+            <tr class="d-flex">
+                <th class="col-sm-1">ID</th>
+                <th class="col-1">NAME</th>
+                <th class="col-1">SURNAME</th>
+                <th class="col-2">ADDRESS</th>
+                <th class="col-2">EMAIL</th>
+                <th class="col-1">PHONE NUMBER</th>
+                <th class="col-md-2">DESCRIPTION</th>
+                <th class="col-1">DATE JOINED</th>
+                <th class="col-2 text-center">ACTIONS</th>
+            </tr>
+            </thead>
+            <tbody class="text-color-lighter">
+            {% for item in customers_all %}
+                <tr class="d-flex">
+
+                    <td class="col-sm-1">{{ item.id }}</td>
+                    <td class="col-1">{{ item.first_name }}</td>
+                    <td class="col-1">{{ item.last_name}}</td>
+                    <td class="col-2">{{ item.address}}</td>
+                    <td class="col-2">{{ item.email}}</td>
+                    <td class="col-1">{{ item.phone_number}}</td>
+                    <td class="col-md-2">{{ item.description}}</td>
+                    <td class="col-1">{{ item.date_joined}}</td>
+                    <td class="col-2 d-flex align-items-center justify-content-center flex-wrap">
+                        <a href="#" class="btn btn-danger rounded-0 text-light m-1">Usuń</a>
+                        <a href="#" class="btn btn-info rounded-0 text-light m-1">Szczegóły</a>
+                        <a href="#" class="btn btn-dark rounded-0 text-light m-1">Edytuj</a>
+                    </td>
+                </tr>
+            {% endfor %}
+{% endblock %}
