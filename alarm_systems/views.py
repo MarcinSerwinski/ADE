@@ -1,4 +1,5 @@
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.shortcuts import render, redirect
 from django.views import View
 
@@ -13,7 +14,8 @@ def home(request):
     return render(request, 'home/home.html')
 
 
-class MainView(View):
+class MainView(PermissionRequiredMixin, View):
+    permission_required = 'users.add_choice'
     def get(self, request):
         customers_all = Customer.objects.all().order_by('last_name')
         return render(
