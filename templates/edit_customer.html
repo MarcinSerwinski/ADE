@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% block title %}
+    Edit
+{% endblock %}
+
+
+{% block container %}
+    <form action="" method="post">
+        {% csrf_token %}
+        <div class="schedules-content">
+            <table class="table border-bottom">
+                <thead>
+                <tr class="d-flex">
+                    <th class="col-sm-1">ID</th>
+                    <th class="col-1">NAME</th>
+                    <th class="col-1">SURNAME</th>
+                    <th class="col-2">ADDRESS</th>
+                    <th class="col-2">EMAIL</th>
+                    <th class="col-1">PHONE NUMBER</th>
+                    <th class="col-md-2">DESCRIPTION</th>
+                    <th class="col-1">DATE JOINED</th>
+                    <th class="col-2 text-center">ACTIONS</th>
+                </tr>
+                </thead>
+                <tbody class="text-color-lighter">
+                {% block table_customer %}
+                    <tr class="d-flex">
+                        <td class="col-sm-1">{{ customer_to_be_edited.id }}</td>
+                        <td class="col-1">{{ customer_to_be_edited.first_name }}</td>
+                        <td class="col-1">{{ customer_to_be_edited.last_name }}</td>
+                        <td class="col-2">{{ customer_to_be_edited.address }}</td>
+                        <td class="col-2">{{ customer_to_be_edited.email }}</td>
+                        <td class="col-1">{{ customer_to_be_edited.phone_number }}</td>
+                        <td class="col-md-2">{{ customer_to_be_edited.description }}</td>
+                        <td class="col-1">{{ customer_to_be_edited.date_joined }}</td>
+                    </tr>
+                {% endblock %}
+                </tbody>
+            </table>
+        </div>
+    </form>
+{% endblock %}
