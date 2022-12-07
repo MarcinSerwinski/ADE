@@ -1,21 +1,17 @@
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.mixins import PermissionRequiredMixin
-from django.http import request
+from django.contrib.auth.mixins import PermissionRequiredMixin, LoginRequiredMixin
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views import View
 
 from . import forms
-from alarm_systems.models import Customer
-
-
-# Create your views here.
+from alarm_systems.models import Customer, Location
 
 
 def home(request):
     return render(request, 'home/home.html')
 
 
-class MainView(PermissionRequiredMixin, View):
+class MainView(PermissionRequiredMixin, LoginRequiredMixin, View):
     permission_required = 'users.add_choice'
 
     def get(self, request):
@@ -185,3 +181,15 @@ def edit_customer_description(request, customer_id):
         context={
             'customer_to_be_edited': customer_to_be_edited,
             'form': form})
+
+
+def details_customer(request, customer_id):
+    locations = Location.objects.filter(customer_id=customer_id).order_by('name')
+    customer = get_object_or_404(Customer, pk=customer_id)
+    return render(
+        request,
+        'home/customer_details/customer_details_main_page.html',
+        context={
+            'locations': locations,
+            'customer': customer,
+        })

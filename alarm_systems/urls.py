@@ -23,4 +23,7 @@ urlpatterns = [
          name='edit_customer_phone_number'),
     path('main_view/edit_customer_description/<int:customer_id>', views.edit_customer_description,
          name='edit_customer_description'),
+    path('main_view/details_customer/<int:customer_id>', views.details_customer,
+         name='details_customer'),
+
 ]

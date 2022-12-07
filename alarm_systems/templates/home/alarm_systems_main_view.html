@@ -7,7 +7,7 @@
 
 {% block container %}
     <div class="schedules-content">
-        <a href="{% url 'alarm_systems:add_customer' %}" class="btn btn-dark rounded-0 text-light m-1">Add new
+        <a href="{% url 'alarm_systems:add_customer' %}" class="btn btn-success rounded-10 text-black-50 m-1">Add new
             customer</a>
         <table class="table border-bottom">
             <thead>
@@ -26,37 +26,38 @@
             <tbody class="text-color-lighter">
             {% for customer in customers_all %}
                 <tr class="d-flex">
-                    <td class="col-sm-1">{{ customer.id }}</td>
-                    <td class="col-1">{{ customer.first_name }} <a
-                            href="{% url 'alarm_systems:edit_customer_first_name' customer.id %}"
-                            class="btn btn-dark rounded-0 text-light m-1">Edit</a></td>
-                    <td class="col-1">{{ customer.last_name }} <a
-                            href="{% url 'alarm_systems:edit_customer_last_name' customer.id %}"
-                            class="btn btn-dark rounded-0 text-light m-1">Edit</a>
-                    </td>
-                    <td class="col-2">{{ customer.address }} <a
-                            href="{% url 'alarm_systems:edit_customer_address' customer.id %}"
-                            class="btn btn-dark rounded-0 text-light m-1">Edit</a></td>
-                    <td class="col-2">{{ customer.email }}<a
-                            href="{% url 'alarm_systems:edit_customer_email' customer.id %}"
-                            class="btn btn-dark rounded-0 text-light m-1">Edit</a></td>
-                    <td class="col-1">{{ customer.phone_number }}<a
-                            href="{% url 'alarm_systems:edit_customer_phone_number' customer.id %}"
-                            class="btn btn-dark rounded-0 text-light m-1">Edit</a></td>
-                    <td class="col-md-2">{{ customer.description }}<a
-                            href="{% url 'alarm_systems:edit_customer_description' customer.id %}"
-                            class="btn btn-dark rounded-0 text-light m-1">Edit</a></td>
-                    <td class="col-1">{{ customer.date_joined }}</td>
-                    <td class="col-2 d-flex align-items-center justify-content-center flex-wrap">
-                        <a href="{% url 'alarm_systems:delete_customer' customer.id %}"
-                           class="btn btn-danger rounded-0 text-light m-1">Delete</a>
-                        <a href="#" class="btn btn-info rounded-0 text-light m-1">Details</a>
-                        <a href="{% url 'alarm_systems:edit_customer_all_view' customer.id %}"
-                           class="btn btn-dark rounded-0 text-light m-1">Edit All</a>
-                    </td>
-                </tr>
-                </tbody>
-                </table>
-                </div>
-            {% endfor %}
+                <td class="col-sm-1">{{ customer.id }}</td>
+                <td class="col-1">{{ customer.first_name }} <a
+                        href="{% url 'alarm_systems:edit_customer_first_name' customer.id %}"
+                        class="btn btn-sm btn-success text-capitalize m-1">Edit</a></td>
+                <td class="col-1">{{ customer.last_name }} <a
+                        href="{% url 'alarm_systems:edit_customer_last_name' customer.id %}"
+                        class="btn btn-sm btn-success text-capitalize m-1">Edit</a>
+                </td>
+                <td class="col-2">{{ customer.address }} <a
+                        href="{% url 'alarm_systems:edit_customer_address' customer.id %}"
+                        class="btn btn-sm btn-success text-capitalize m-1">Edit</a></td>
+                <td class="col-2">{{ customer.email }}<a
+                        href="{% url 'alarm_systems:edit_customer_email' customer.id %}"
+                        class="btn btn-sm btn-success text-capitalize m-1">Edit</a></td>
+                <td class="col-1">{{ customer.phone_number }}<a
+                        href="{% url 'alarm_systems:edit_customer_phone_number' customer.id %}"
+                        class="btn btn-sm btn-success text-capitalize m-1">Edit</a></td>
+                <td class="col-md-2">{{ customer.description }}<a
+                        href="{% url 'alarm_systems:edit_customer_description' customer.id %}"
+                        class="btn btn-sm btn-success text-capitalize m-1">Edit</a></td>
+                <td class="col-1">{{ customer.date_joined }}</td>
+                <td class="col-2 d-flex align-items-center justify-content-center flex-wrap">
+                <a href="{% url 'alarm_systems:delete_customer' customer.id %}"
+                   class="btn btn-danger rounded-10 text-light m-1">Delete</a>
+                <a href="{% url 'alarm_systems:details_customer' customer.id %}"
+                   class="btn btn-info rounded-10 text-light m-1">Details</a>
+                <a href="{% url 'alarm_systems:edit_customer_all_view' customer.id %}"
+                   class="btn btn-dark rounded-10 text-light m-1">Edit All</a>{% endfor %}
+            </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
 {% endblock %}

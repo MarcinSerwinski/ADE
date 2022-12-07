@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Locations
+{% endblock %}
+
+
+{% block container %}
+    <div class="schedules-content">
+        <div class="col-sm">
+            <a href="#" class="btn btn-secondary  rounded-10 text-light m-1">Add new
+                location for {{ customer.first_name }} {{ customer.last_name }}</a>
+            <a href="{% url 'alarm_systems:main_view' %}" class="btn btn-info">Return to
+                customer list</a>
+        </div>
+        <table class="table border-bottom border-dark ">
+            <thead>
+            <tr class="d-flex">
+                <th class="col-sm-1">ID</th>
+                <th class="col-1">NAME</th>
+                <th class="col-2">ADDRESS</th>
+                <th class="col-md-2">DESCRIPTION</th>
+                <th class="col-2 text-center">ACTIONS</th>
+            </tr>
+            </thead>
+            <tbody class="text-color-lighter">
+            {% for location in locations %}
+                <tr class="d-flex ">
+                <td class="col-sm-1">{{ location.id }}</td>
+                <td class="col-1">{{ location.name }}</td>
+                <td class="col-2">{{ location.address }}</td>
+                <td class="col-md-2">{{ location.description }} {% endfor %}</td>
+
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+{% endblock %}
