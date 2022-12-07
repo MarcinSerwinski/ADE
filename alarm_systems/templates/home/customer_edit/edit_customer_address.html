@@ -1,0 +1,19 @@
+{% extends 'edit_customer.html' %}
+{% load crispy_forms_tags %}
+{% block title %}
+    Edit Customer's address
+{% endblock %}
+{% block table_customer %}
+    <tr class="d-flex">
+        <td class="col-sm-1">{{ customer_to_be_edited.id }}</td>
+        <td class="col-1">{{ customer_to_be_edited.first_name }}</td>
+        <td class="col-2">{{ customer_to_be_edited.last_name }}</td>
+        <td class="col-1">{{ form|crispy }}
+            <button type="submit" class="btn btn-outline-danger">Edit</button>
+        </td>
+        <td class="col-2">{{ customer_to_be_edited.email }}</td>
+        <td class="col-1">{{ customer_to_be_edited.phone_number }}</td>
+        <td class="col-md-2">{{ customer_to_be_edited.description }}</td>
+        <td class="col-1">{{ customer_to_be_edited.date_joined }}</td>
+    </tr>
+{% endblock %}
