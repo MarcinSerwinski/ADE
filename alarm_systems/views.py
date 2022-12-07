@@ -193,3 +193,15 @@ def details_customer(request, customer_id):
             'locations': locations,
             'customer': customer,
         })
+
+
+def add_location_view(request):
+    form = forms.AddCustomerForm(request.POST)
+    if request.method == 'POST':
+        if form.is_valid():
+            form.save()
+            return redirect('alarm_systems:main_view')
+
+    return render(request,
+                  'home/add_customer.html',
+                  context={'form': form})

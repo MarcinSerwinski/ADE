@@ -54,3 +54,9 @@ class EditCustomerDescriptionForm(forms.ModelForm):
     class Meta:
         model = models.Customer
         fields = ('description',)
+
+
+class AddLocationForm(forms.ModelForm):
+    class Meta:
+        model = models.Location
+        fields = ('name', 'address', 'description')
