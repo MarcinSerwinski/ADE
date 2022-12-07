@@ -9,7 +9,9 @@
 
     <form action="" method="post">
         {% csrf_token %}
-
+        <h1>CAUTION! This will erase all data
+            about {{ customer_to_be_deleted.first_name }} {{ customer_to_be_deleted.last_name }}.
+            Are you sure?</h1>
         {{ form|crispy }}
         <button type="submit" class="btn btn-outline-danger">Yes. Delete.</button>
         <a href="{% url 'alarm_systems:main_view' %}" class="btn btn-outline-success ">No. Return to customer
@@ -19,15 +21,3 @@
 
 {% endblock %}
 
-
-<form action="" method="post">
-    {% csrf_token %}
-    <h1>CAUTION! This will erase all data
-        about {{ customer_to_be_deleted.first_name }} {{ customer_to_be_deleted.last_name }}.
-        Are you sure?</h1>
-    {{ form|crispy }}
-    <button type="submit" class="btn btn-outline-danger">Yes. Delete.</button>
-    <a href="{% url 'alarm_systems:main_view' %}" class="btn btn-outline-success ">No. Return to customer
-        list page.</a>
-
-</form>

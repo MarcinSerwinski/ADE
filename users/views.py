@@ -24,10 +24,9 @@ def registration_view(request):
                 user.groups.add(operator_group)
                 user.user_permissions.add(permission)
             else:
-                # permission = Permission.objects.get(name='Can view course')
                 customer_group = Group.objects.get(name='customers')
                 user.groups.add(customer_group)
-                # user.user_permissions.add(permission)
+
             return redirect('users:login_view')
     else:
         form = forms.RegistrationForm()

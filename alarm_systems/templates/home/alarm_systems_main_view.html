@@ -35,9 +35,11 @@
             <td class="col-md-2">{{ customer.description }}</td>
             <td class="col-1">{{ customer.date_joined }}</td>
             <td class="col-2 d-flex align-items-center justify-content-center flex-wrap">
-                <a href="{% url 'alarm_systems:delete_customer_view' customer.id %}" class="btn btn-danger rounded-0 text-light m-1">Delete</a>
+                <a href="{% url 'alarm_systems:delete_customer_view' customer.id %}"
+                   class="btn btn-danger rounded-0 text-light m-1">Delete</a>
                 <a href="#" class="btn btn-info rounded-0 text-light m-1">Details</a>
-                <a href="#" class="btn btn-dark rounded-0 text-light m-1">Edit</a>
+                <a href="{% url 'alarm_systems:edit_customer_view' customer.id %}"
+                   class="btn btn-dark rounded-0 text-light m-1">Edit</a>
             </td>
         </tr>
     {% endfor %}
