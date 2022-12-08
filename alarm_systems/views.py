@@ -4,7 +4,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.views import View
 
 from . import forms
-from alarm_systems.models import Customer, Location, System, SystemType
+from alarm_systems.models import Customer, Location, System, SystemType, Camera
 
 
 def home(request):
@@ -166,7 +166,7 @@ def edit_customer_phone_number(request, customer_id):
 
 
 def edit_customer_description(request, customer_id):
-    customer_to_be_edited = get_object_or_404(Customer, pk=customer_id)
+    customer_to_be_edited = Customer.objects.get(pk=customer_id)
     form = forms.EditCustomerDescriptionForm(request.POST)
     if request.method == 'POST':
 
@@ -215,7 +215,7 @@ def location_details(request, location_id):
 
     return render(
         request,
-        'home/system_details/location_details_main_page.html',
+        'home/location_details/location_details_main_page.html',
         context={
             'systems': systems,
             'locations': locations})
@@ -235,8 +235,17 @@ def add_system_for_location(request, location_id):
             return redirect('alarm_systems:location_details', location_id)
 
     return render(request,
-                  'home/system_details/add_system_for_location.html',
+                  'home/location_details/add_system_for_location.html',
 
                   context={
                       'system_form': system_form,
                       'system_type_form': system_type_form})
+
+
+def details_system(request, systemtype_id):
+
+    cameras = Camera.objects.all()
+    return render(request,
+                  'home/system_details/system_details.html',
+
+                  context={})

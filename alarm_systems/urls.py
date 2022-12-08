@@ -31,4 +31,6 @@ urlpatterns = [
          name='location_details'),
     path('main_view/add_system/<int:location_id>', views.add_system_for_location,
          name='add_system_for_location'),
+    path('main_view/details_system/<int:systemtype_id>', views.details_system,
+         name='details_system'),
 ]
