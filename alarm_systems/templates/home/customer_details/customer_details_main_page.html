@@ -8,7 +8,8 @@
 {% block container %}
     <div class="schedules-content">
         <div class="col-sm">
-            <a href="#" class="btn btn-secondary  rounded-10 text-light m-1">Add new
+            <a href="{% url 'alarm_systems:add_location_customer' customer.id %}"
+               class="btn btn-secondary  rounded-10 text-light m-1">Add new
                 location for {{ customer.first_name }} {{ customer.last_name }}</a>
             <a href="{% url 'alarm_systems:main_view' %}" class="btn btn-info">Return to
                 customer list</a>

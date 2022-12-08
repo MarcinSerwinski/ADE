@@ -25,5 +25,6 @@ urlpatterns = [
          name='edit_customer_description'),
     path('main_view/details_customer/<int:customer_id>', views.details_customer,
          name='details_customer'),
-
+    path('main_view/add_location/<int:customer_id>', views.add_location_view,
+         name='add_location_customer'),
 ]

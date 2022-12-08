@@ -191,17 +191,19 @@ def details_customer(request, customer_id):
         'home/customer_details/customer_details_main_page.html',
         context={
             'locations': locations,
-            'customer': customer,
-        })
+            'customer': customer})
 
 
-def add_location_view(request):
-    form = forms.AddCustomerForm(request.POST)
+def add_location_view(request, customer_id):
+    form = forms.AddLocationForm(request.POST)
     if request.method == 'POST':
         if form.is_valid():
+            form.instance.customer_id = customer_id
             form.save()
-            return redirect('alarm_systems:main_view')
+            return redirect('alarm_systems:details_customer', customer_id)
 
     return render(request,
-                  'home/add_customer.html',
-                  context={'form': form})
+                  'home/customer_details/add_location_customer.html',
+
+                  context={
+                      'form': form})

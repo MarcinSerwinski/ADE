@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}
+    Add customer's location
+{% endblock %}
+
+{% block container %}
+
+    <form action="" method="post">
+        {% csrf_token %}
+
+        {{ form|crispy }}
+        <button type="submit" class="btn btn-success">Add new customer's location</button>
+
+    </form>
+
+{% endblock %}
