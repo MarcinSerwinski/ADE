@@ -25,6 +25,10 @@ urlpatterns = [
          name='edit_customer_description'),
     path('main_view/details_customer/<int:customer_id>', views.details_customer,
          name='details_customer'),
-    path('main_view/add_location/<int:customer_id>', views.add_location_view,
+    path('main_view/add_location/<int:customer_id>', views.add_location,
          name='add_location_customer'),
+    path('main_view/details_customer/location_details/<int:location_id>', views.location_details,
+         name='location_details'),
+    path('main_view/add_system/<int:location_id>', views.add_system_for_location,
+         name='add_system_for_location'),
 ]

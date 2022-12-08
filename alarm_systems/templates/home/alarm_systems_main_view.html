@@ -47,11 +47,13 @@
                         href="{% url 'alarm_systems:edit_customer_description' customer.id %}"
                         class="btn btn-sm btn-success text-capitalize m-1">Edit</a></td>
                 <td class="col-1">{{ customer.date_joined }}</td>
-                <td class="col-2 d-flex align-items-center justify-content-center flex-wrap">
+                <td class="col-1 d-flex align-items-center justify-content-center flex-wrap">
                 <a href="{% url 'alarm_systems:delete_customer' customer.id %}"
                    class="btn btn-danger rounded-10 text-light m-1">Delete</a>
+                <td class="col-1 d-flex align-items-center justify-content-center flex-wrap">
                 <a href="{% url 'alarm_systems:details_customer' customer.id %}"
                    class="btn btn-info rounded-10 text-light m-1">Details</a>
+                <td class="col-1 d-flex align-items-center justify-content-center flex-wrap">
                 <a href="{% url 'alarm_systems:edit_customer_all_view' customer.id %}"
                    class="btn btn-dark rounded-10 text-light m-1">Edit All</a>{% endfor %}
             </td>

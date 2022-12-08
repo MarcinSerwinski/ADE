@@ -4,7 +4,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.views import View
 
 from . import forms
-from alarm_systems.models import Customer, Location
+from alarm_systems.models import Customer, Location, System, SystemType
 
 
 def home(request):
@@ -194,7 +194,7 @@ def details_customer(request, customer_id):
             'customer': customer})
 
 
-def add_location_view(request, customer_id):
+def add_location(request, customer_id):
     form = forms.AddLocationForm(request.POST)
     if request.method == 'POST':
         if form.is_valid():
@@ -207,3 +207,36 @@ def add_location_view(request, customer_id):
 
                   context={
                       'form': form})
+
+
+def location_details(request, location_id):
+    systems = System.objects.filter(location_id=location_id)
+    locations = Location.objects.filter(pk=location_id)
+
+    return render(
+        request,
+        'home/system_details/location_details_main_page.html',
+        context={
+            'systems': systems,
+            'locations': locations})
+
+
+def add_system_for_location(request, location_id):
+    system_form = forms.AddSystemForm(request.POST)
+    system_type_form = forms.AddSystemTypeForm(request.POST)
+    if request.method == 'POST':
+        if system_type_form.is_valid():
+            if system_type_form.save():
+                system_form.instance.location_id = location_id
+                latest_created_system_type = SystemType.objects.latest('pk')
+                system_form.instance.system_type_id = latest_created_system_type.id
+                system_form.save()
+
+            return redirect('alarm_systems:location_details', location_id)
+
+    return render(request,
+                  'home/system_details/add_system_for_location.html',
+
+                  context={
+                      'system_form': system_form,
+                      'system_type_form': system_type_form})

@@ -22,7 +22,7 @@ class Location(models.Model):
 class System(models.Model):
     location = models.ForeignKey('Location', on_delete=models.CASCADE)
     date_installed = models.DateField(auto_now_add=True)
-    last_check = models.DateTimeField(auto_now=True)
+    last_check = models.DateField(auto_now=True)
     system_type = models.ForeignKey('SystemType', on_delete=models.CASCADE)
 
 

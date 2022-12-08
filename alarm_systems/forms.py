@@ -60,3 +60,15 @@ class AddLocationForm(forms.ModelForm):
     class Meta:
         model = models.Location
         fields = ('name', 'address', 'description')
+
+
+class AddSystemForm(forms.ModelForm):
+    class Meta:
+        model = models.System
+        fields = ()
+
+
+class AddSystemTypeForm(forms.ModelForm):
+    class Meta:
+        model = models.SystemType
+        fields = ('name',)

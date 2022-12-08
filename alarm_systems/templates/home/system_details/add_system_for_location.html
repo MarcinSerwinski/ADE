@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}
+    Add system
+{% endblock %}
+
+{% block container %}
+
+    <form action="" method="post">
+        {% csrf_token %}
+
+        {{ system_type_form|crispy }}
+        {{ system_form|crispy }}
+        <button type="submit" class="btn btn-success">Add new system</button>
+
+    </form>
+
+{% endblock %}
