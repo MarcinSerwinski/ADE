@@ -31,6 +31,10 @@ urlpatterns = [
          name='location_details'),
     path('main_view/add_system/<int:location_id>', views.add_system_for_location,
          name='add_system_for_location'),
-    path('main_view/details_system/<int:systemtype_id>', views.details_system,
+    path('main_view/details_system/<int:system_id>', views.details_system,
          name='details_system'),
+    path('main_view/add_registrator/<int:system_id>', views.add_registrator,
+         name='add_registrator'),
+    path('main_view/add_registrator/add_camera/<int:system_id>', views.add_camera,
+         name='add_camera'),
 ]

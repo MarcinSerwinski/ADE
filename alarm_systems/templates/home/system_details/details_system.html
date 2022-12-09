@@ -1,0 +1,165 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Systems
+{% endblock %}
+
+
+{% block container %}
+    <div class="schedules-content">
+        <div class="col-sm">
+            {% if registrators and cameras %}
+                <div class="col-sm">
+                    {% for demanded_action in systems %}
+                        <a href="{% url 'alarm_systems:location_details' demanded_action.location_id %}"
+                           class="btn btn-info">Return</a>
+                        <a href="{% url 'alarm_systems:add_camera' demanded_action.system_type_id %}"
+                           class="btn btn-info">Add cameras</a>
+                    {% endfor %}
+                </div>
+
+                <table class="table border-bottom border-dark ">
+                    <thead>
+                    <tr class="d-flex">
+                        <th class="col-sm-1">ID</th>
+                        <th class="col-1">BRAND</th>
+                        <th class="col-2">MODEL</th>
+                        <th class="col-2">SERIAL NUMER</th>
+                        <th class="col-2">DESCRIPTION</th>
+                    </tr>
+                    </thead>
+                    <tbody class="text-color-lighter">
+                    {% for registrator in registrators %}
+                        <tr class="d-flex ">
+                        <td class="col-sm-1">{{ registrator.id }}</td>
+                        <td class="col-1">{{ registrator.brand }}</td>
+                        <td class="col-2">{{ registrator.model }}</td>
+                        <td class="col-2">{{ registrator.serial_number }}</td>
+                        <td class="col-2">{{ registrator.description }}</td>
+                        {% for demanded_action in systems %}
+                            <td class="col-1 d-flex align-items-center justify-content-center flex-wrap">
+                                <a href="#"
+                                   class="btn btn-danger rounded-10 text-light m-1">Delete</a>
+                            <td class="col-1 d-flex align-items-center justify-content-center flex-wrap">
+                                <a href="#"
+                                   class="btn btn-dark rounded-10 text-light m-1">Edit</a>
+                            <td class="col-1 d-flex align-items-center justify-content-center flex-wrap">
+                            <a href="{% url 'alarm_systems:add_registrator' demanded_action.id %}"
+                               class="btn btn-success rounded-10 text-light m-1">Add</a>
+                        {% endfor %}
+                    {% endfor %}
+                    </td>
+                    </tbody>
+                </table>
+                <table class="table border-bottom border-dark ">
+                    <thead>
+                    <tr class="d-flex">
+                        <th class="col-sm-1">ID</th>
+                        <th class="col-1">BRAND</th>
+                        <th class="col-2">MODEL</th>
+                        <th class="col-2">SERIAL NUMER</th>
+                        <th class="col-2">DESCRIPTION</th>
+                        <th class="col-2">PLACEMENT</th>
+                    </tr>
+                    </thead>
+                    <tbody class="text-color-lighter">
+                    {% for camera in cameras %}
+                        <tr class="d-flex ">
+                        <td class="col-sm-1">{{ camera.id }}</td>
+                        <td class="col-1">{{ camera.brand }}</td>
+                        <td class="col-2">{{ camera.model }}</td>
+                        <td class="col-2">{{ camera.serial_number }}</td>
+                        <td class="col-2">{{ camera.description }}</td>
+                        <td class="col-2">{{ camera.get_placement_display }}</td>
+                        <td class="col-2">{{ camera.registrator.brand }} {{ camera.registrator.model }} {{ camera.registrator.serial_number }}</td>
+
+                        <td class="col-1 d-flex align-items-center justify-content-center flex-wrap">
+                            <a href="#"
+                               class="btn btn-danger rounded-10 text-light m-1">Delete</a>
+                        <td class="col-1 d-flex align-items-center justify-content-center flex-wrap">
+                        <a href="#"
+                           class="btn btn-dark rounded-10 text-light m-1">Edit</a>
+                    {% endfor %}
+                    </td>
+                    </tr>
+                    </tbody>
+                </table>
+
+                </div>
+            {% else %}
+                <div class="schedules-content">
+                <div class="col-sm">
+                    <a href="#"
+                       class="btn btn-secondary  rounded-10 text-light m-1">Add new
+                        system for </a>
+                    <a href="#" class="btn btn-info">Return</a>
+
+                </div>
+                <table class="table border-bottom border-dark ">
+                    <thead>
+                    <tr class="d-flex">
+                        <th class="col-sm-1">ID</th>
+                        <th class="col-1">BRAND</th>
+                        <th class="col-2">MODEL</th>
+                        <th class="col-2">SERIAL NUMER</th>
+                        <th class="col-2">DESCRIPTION</th>
+                    </tr>
+                    </thead>
+                    <tbody class="text-color-lighter">
+                    {% for central in centrals %}
+                        <tr class="d-flex ">
+                        <td class="col-sm-1">{{ central.id }}</td>
+                        <td class="col-1">{{ central.brand }}</td>
+                        <td class="col-2">{{ central.model }}</td>
+                        <td class="col-2">{{ central.serial_number }}</td>
+                        <td class="col-2">{{ central.description }}</td>
+
+                        <td class="col-1 d-flex align-items-center justify-content-center flex-wrap">
+                            <a href="#"
+                               class="btn btn-danger rounded-10 text-light m-1">Delete</a>
+                        <td class="col-1 d-flex align-items-center justify-content-center flex-wrap">
+                            <a href="#"
+                               class="btn btn-dark rounded-10 text-light m-1">Edit</a>
+                        <td class="col-1 d-flex align-items-center justify-content-center flex-wrap">
+                        <a href="#"
+                           class="btn btn-success rounded-10 text-light m-1">Add</a>
+                    {% endfor %}
+                    </td>
+                    </tbody>
+                </table>
+                <table class="table border-bottom border-dark ">
+                    <thead>
+                    <tr class="d-flex">
+                        <th class="col-sm-1">ID</th>
+                        <th class="col-1">BRAND</th>
+                        <th class="col-2">MODEL</th>
+                        <th class="col-2">SERIAL NUMER</th>
+                        <th class="col-2">DESCRIPTION</th>
+                        <th class="col-2">PLACEMENT</th>
+                    </tr>
+                    </thead>
+                    <tbody class="text-color-lighter">
+                    {% for motionsensor in motionsensors %}
+                        <tr class="d-flex ">
+                        <td class="col-sm-1">{{ motionsensor.id }}</td>
+                        <td class="col-1">{{ motionsensor.brand }}</td>
+                        <td class="col-2">{{ motionsensor.model }}</td>
+                        <td class="col-2">{{ motionsensor.serial_number }}</td>
+                        <td class="col-2">{{ motionsensor.description }}</td>
+                        <td class="col-2">{{ motionsensor.get_placement_display }}</td>
+
+                        <td class="col-1 d-flex align-items-center justify-content-center flex-wrap">
+                            <a href="#"
+                               class="btn btn-danger rounded-10 text-light m-1">Delete</a>
+                        <td class="col-1 d-flex align-items-center justify-content-center flex-wrap">
+                        <a href="#"
+                           class="btn btn-dark rounded-10 text-light m-1">Edit</a>
+                    {% endfor %}
+                    </td>
+                    </tr>
+                    </tbody>
+                </table>
+            {% endif %}
+            </div>
+
+{% endblock %}

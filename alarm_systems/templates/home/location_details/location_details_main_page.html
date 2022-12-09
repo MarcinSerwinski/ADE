@@ -10,7 +10,7 @@
         <div class="col-sm">{% for demanded_action in locations %}
             <a href="{% url 'alarm_systems:add_system_for_location' demanded_action.id %}"
                class="btn btn-secondary  rounded-10 text-light m-1">Add new
-                system for </a>
+                system </a>
             <a href="{% url 'alarm_systems:details_customer' demanded_action.customer_id %}" class="btn btn-info">Return</a>
         {% endfor %}
         </div>

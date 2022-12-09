@@ -4,7 +4,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.views import View
 
 from . import forms
-from alarm_systems.models import Customer, Location, System, SystemType, Camera
+from alarm_systems.models import Customer, Location, System, SystemType, Camera, Registrator, Central, MotionSensor
 
 
 def home(request):
@@ -242,10 +242,60 @@ def add_system_for_location(request, location_id):
                       'system_type_form': system_type_form})
 
 
-def details_system(request, systemtype_id):
+def details_system(request, system_id):
+    systems = System.objects.filter(pk=system_id)
+    registrators = Registrator.objects.filter(system_types_id=system_id)
+    centrals = Central.objects.filter(system_types_id=system_id)
 
-    cameras = Camera.objects.all()
+    if registrators:
+        cameras = []
+        for registrator in registrators:
+            cameras.extend(Camera.objects.filter(registrator_id=registrator))
+
+        return render(request,
+                      'home/system_details/details_system.html',
+                      context={'registrators': registrators,
+                               'cameras': cameras,
+                               'systems': systems})
+    elif centrals:
+        motionsensors = []
+        for central in centrals:
+            motionsensors.extend(MotionSensor.objects.filter(central_id=central))
+
+        return render(request,
+                      'home/system_details/details_system.html',
+                      context={'motionsensors': motionsensors,
+                               'centrals': centrals,
+                               'systems': systems})
+    else:
+        return render(request,
+                      'home/system_details/details_system.html')
+
+
+def add_registrator(request, system_id):
+    form = forms.AddRegistratorForm(request.POST)
+    if request.method == 'POST':
+        if form.is_valid():
+            form.instance.system_types_id = system_id
+            form.save()
+            return redirect('alarm_systems:details_system', system_id)
+
     return render(request,
-                  'home/system_details/system_details.html',
+                  'home/system_details/add_registrator.html',
 
-                  context={})
+                  context={
+                      'form': form})
+
+
+def add_camera(request, system_id):
+    form = forms.AddCameraForm(request.POST)
+    if request.method == 'POST':
+        if form.is_valid():
+            form.save()
+            return redirect('alarm_systems:details_system', system_id)
+
+    return render(request,
+                  'home/system_details/add_camera.html',
+
+                  context={
+                      'form': form})
