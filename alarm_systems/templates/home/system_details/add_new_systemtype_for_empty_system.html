@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Add system type for this system
+{% endblock %}
+
+{% block container %}
+    <h3>Nothing in this system! Consider creating new one:.</h3>
+            <div class="col-sm"> {% for system in systems %}
+            <a  href="#"
+               class="btn btn-secondary  rounded-10 text-light m-1">Return</a>
+            <a  href="{% url 'alarm_systems:add_registrator' system.id %}"
+               class="btn btn-secondary  rounded-10 text-light m-1">Create video surveillance</a>
+            <a href="{% url 'alarm_systems:add_central' system.id %}" class="btn btn-info">Create motion detecting alarm system  </a>{% endfor %}
+
+        </div>
+{% endblock %}

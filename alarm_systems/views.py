@@ -268,8 +268,7 @@ def details_system(request, system_id):
                                'centrals': centrals,
                                'systems': systems})
     else:
-        return render(request,
-                      'home/system_details/details_system.html')
+        return redirect('alarm_systems:empty_system', system_id)
 
 
 def add_registrator(request, system_id):
@@ -296,6 +295,43 @@ def add_camera(request, system_id):
 
     return render(request,
                   'home/system_details/add_camera.html',
+                  context={
+                      'form': form})
+
+def add_central(request, system_id):
+    form = forms.AddCentralForm(request.POST)
+    if request.method == 'POST':
+        if form.is_valid():
+            form.instance.system_types_id = system_id
+            form.save()
+            return redirect('alarm_systems:details_system', system_id)
+
+    return render(request,
+                  'home/system_details/add_central.html',
 
                   context={
                       'form': form})
+
+
+def add_motionsensor(request, system_id):
+    form = forms.AddMotionSensorForm(request.POST)
+    if request.method == 'POST':
+        if form.is_valid():
+            form.save()
+            return redirect('alarm_systems:details_system', system_id)
+
+    return render(request,
+                  'home/system_details/add_motionsensor.html',
+                  context={
+                      'form': form})
+
+
+
+
+def empty_system(request, system_id):
+    systems = System.objects.filter(pk=system_id)
+
+    return render(request,
+                  'home/system_details/add_new_systemtype_for_empty_system.html',
+                   context={
+                       'systems': systems})

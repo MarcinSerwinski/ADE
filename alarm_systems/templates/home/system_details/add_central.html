@@ -2,16 +2,16 @@
 {% load crispy_forms_tags %}
 
 {% block title %}
-    Add registrator
+    Add central
 {% endblock %}
 
 {% block container %}
-    <h3>Add registrator</h3>
+    <h3>Add central</h3>
     <form action="" method="post">
         {% csrf_token %}
 
         {{ form|crispy }}
-        <button type="submit" class="btn btn-success">Add new registrator</button>
+        <button type="submit" class="btn btn-success">Add new central</button>
 
     </form>
 

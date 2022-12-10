@@ -95,4 +95,4 @@ class AddCentralForm(forms.ModelForm):
 class AddMotionSensorForm(forms.ModelForm):
     class Meta:
         model = models.MotionSensor
-        fields = ('brand', 'model', 'serial_number', 'placement', 'description')
+        fields = ('brand', 'model', 'serial_number', 'placement', 'description', 'central')
