@@ -35,10 +35,10 @@
                 <a href="#"
                    class="btn btn-danger rounded-10 text-light m-1">Delete</a>
                 <td class="col-1 d-flex align-items-center justify-content-center flex-wrap">
-                <a href="{% url 'alarm_systems:details_system' system.system_type_id %}"
+                <a href="{% url 'alarm_systems:details_system' system.id %}"
                    class="btn btn-info rounded-10 text-light m-1">See details</a>
                 <td class="col-1 d-flex align-items-center justify-content-center flex-wrap">
-                <a href="#"
+                <a href="{% url 'alarm_systems:edit_system_name' system.id %}"
                    class="btn btn-dark rounded-10 text-light m-1">Edit All</a>{% endfor %}
             </td>
             </tr>

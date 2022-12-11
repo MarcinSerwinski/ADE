@@ -38,7 +38,7 @@
                 <a href="{% url 'alarm_systems:location_details' location.id %}"
                    class="btn btn-info rounded-10 text-light m-1">See systems</a>
                 <td class="col-1 d-flex align-items-center justify-content-center flex-wrap">
-                <a href="#"
+                <a href="{% url 'alarm_systems:edit_location' location.id %}"
                    class="btn btn-dark rounded-10 text-light m-1">Edit All</a>{% endfor %}
             </td>
             </tr>
