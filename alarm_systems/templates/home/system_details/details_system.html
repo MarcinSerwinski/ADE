@@ -40,7 +40,7 @@
                         <td class="col-2">{{ registrator.description }}</td>
                         {% for demanded_action in systems %}
                             <td class="col-1 d-flex align-items-center justify-content-center flex-wrap">
-                                <a href="#"
+                                <a href="{% url 'alarm_systems:delete_registrator' registrator.id %}"
                                    class="btn btn-danger rounded-10 text-light m-1">Delete</a>
                             <td class="col-1 d-flex align-items-center justify-content-center flex-wrap">
                                 <a href="{% url 'alarm_systems:edit_registrator' registrator.id %}"
@@ -76,7 +76,7 @@
                         <td class="col-2">{{ camera.registrator.brand }} {{ camera.registrator.model }} {{ camera.registrator.serial_number }}</td>
 
                         <td class="col-1 d-flex align-items-center justify-content-center flex-wrap">
-                            <a href="#"
+                            <a href="{% url 'alarm_systems:delete_camera' camera.id %}"
                                class="btn btn-danger rounded-10 text-light m-1">Delete</a>
                         <td class="col-1 d-flex align-items-center justify-content-center flex-wrap">
                         <a href="{% url 'alarm_systems:edit_camera' camera.id %}"
@@ -121,7 +121,7 @@
                         <td class="col-2">{{ central.description }}</td>
 
                         <td class="col-1 d-flex align-items-center justify-content-center flex-wrap">
-                            <a href="#"
+                            <a href="{% url 'alarm_systems:delete_central' central.id %}"
                                class="btn btn-danger rounded-10 text-light m-1">Delete</a>
                         <td class="col-1 d-flex align-items-center justify-content-center flex-wrap">
                         <a href="{% url 'alarm_systems:edit_central' central.id %}"
@@ -153,8 +153,8 @@
                         <td class="col-2">{{ motionsensor.get_placement_display }}</td>
                         <td class="col-2">{{ motionsensor.central.brand }} {{ motionsensor.central.model }} {{ motionsensor.central.serial_number }}</td>
                         <td class="col-1 d-flex align-items-center justify-content-center flex-wrap">
-                            <a href="#"
-                               class="btn btn-danger rounded-10 text-light m-1">Delete</a>
+                        <a href="{% url 'alarm_systems:delete_motionsensor' motionsensor.id %}"
+                           class="btn btn-warning rounded-10 text-light m-1">Delete</a>
                         <td class="col-1 d-flex align-items-center justify-content-center flex-wrap">
                         <a href="{% url 'alarm_systems:edit_motionsensor' motionsensor.id %}"
                            class="btn btn-dark rounded-10 text-light m-1">Edit</a>

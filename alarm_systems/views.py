@@ -1,5 +1,6 @@
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import PermissionRequiredMixin, LoginRequiredMixin
+from django.db.models import ProtectedError
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.views import View
@@ -89,6 +90,13 @@ def add_location(request, customer_id):
                       'form': form})
 
 
+def delete_location(request, location_id):
+    if request.method == 'GET':
+        location_to_be_deleted = Location.objects.get(pk=location_id)
+        location_to_be_deleted.delete()
+        return redirect('alarm_systems:main_view')
+
+
 class LocationEditView(UpdateView):
     model = Location
     fields = ['name', 'address', 'description']
@@ -130,6 +138,19 @@ def add_system_for_location(request, location_id):
                   context={
                       'system_form': system_form,
                       'system_type_form': system_type_form})
+
+
+def delete_system(request, system_id):
+    if request.method == 'GET':
+        system_to_be_deleted = System.objects.get(pk=system_id)
+        system_type = system_to_be_deleted.system_type.id
+        system_type_to_be_deleted = SystemType.objects.get(pk=system_type)
+        location_id = system_to_be_deleted.location.id
+        customer = Location.objects.get(pk=location_id)
+        customer_id = customer.customer_id
+        system_type_to_be_deleted.delete()
+        system_to_be_deleted.delete()
+        return redirect('alarm_systems:details_customer', customer_id)
 
 
 def system_name_edit_view(request, system_id):
@@ -199,6 +220,14 @@ def add_registrator(request, system_id):
                       'form': form})
 
 
+def delete_registrator(request, registrator_id):
+    if request.method == 'GET':
+        registrator_to_be_deleted = Registrator.objects.get(pk=registrator_id)
+        system_id = registrator_to_be_deleted.system_types_id
+        registrator_to_be_deleted.delete()
+        return redirect('alarm_systems:details_system', system_id)
+
+
 class RegistratorEditView(UpdateView):
     model = Registrator
     fields = ['brand', 'model', 'serial_number', 'description']
@@ -221,6 +250,16 @@ def add_camera(request, system_id):
                   'home/system_details/add_camera.html',
                   context={
                       'form': form})
+
+
+def delete_camera(request, camera_id):
+    if request.method == 'GET':
+        camera_to_be_deleted = Camera.objects.get(pk=camera_id)
+        registrator = camera_to_be_deleted.registrator_id
+        registrator_id = Registrator.objects.get(pk=registrator)
+        system_id = registrator_id.system_types_id
+        camera_to_be_deleted.delete()
+        return redirect('alarm_systems:details_system', system_id)
 
 
 class CameraEditView(UpdateView):
@@ -251,6 +290,14 @@ def add_central(request, system_id):
                       'form': form})
 
 
+def delete_central(request, central_id):
+    if request.method == 'GET':
+        central_to_be_deleted = Central.objects.get(pk=central_id)
+        system_id = central_to_be_deleted.system_types_id
+        central_to_be_deleted.delete()
+        return redirect('alarm_systems:details_system', system_id)
+
+
 class CentralEditView(UpdateView):
     model = Central
     fields = ['brand', 'model', 'serial_number', 'description']
@@ -272,6 +319,17 @@ def add_motionsensor(request, system_id):
                   'home/system_details/add_motionsensor.html',
                   context={
                       'form': form})
+
+
+def delete_motionsensor(request, motionsensor_id):
+    if request.method == 'GET':
+        motionsensor_to_be_deleted = MotionSensor.objects.get(pk=motionsensor_id)
+        central = motionsensor_to_be_deleted.central_id
+        central_id = Central.objects.get(pk=central)
+        system_id = central_id.system_types_id
+        motionsensor_to_be_deleted.delete()
+        return redirect('alarm_systems:details_system', system_id)
+
 
 class MotionsensorEditView(UpdateView):
     model = MotionSensor

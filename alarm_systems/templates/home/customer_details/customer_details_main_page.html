@@ -32,7 +32,7 @@
                 <td class="col-2">{{ location.address }}</td>
                 <td class="col-md-2">{{ location.description }}</td>
                 <td class="col-1 d-flex align-items-center justify-content-center flex-wrap">
-                <a href="#"
+                <a href="{% url 'alarm_systems:delete_location' location.id %}"
                    class="btn btn-danger rounded-10 text-light m-1">Delete</a>
                 <td class="col-1 d-flex align-items-center justify-content-center flex-wrap">
                 <a href="{% url 'alarm_systems:location_details' location.id %}"
