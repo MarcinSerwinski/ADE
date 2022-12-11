@@ -2,14 +2,11 @@
 {% load crispy_forms_tags %}
 
 {% block title %}
-    Edit system name
+    Edit camera
 {% endblock %}
 
 {% block container %}
-    {% for system in systems %}
-        <h1><a href="{% url 'alarm_systems:location_details' system.location_id %}"
-               class="btn btn-success rounded-10 text-light m-1">Return</a></h1>
-    {% endfor %}
+
     <form action="" method="post">
         {% csrf_token %}
 

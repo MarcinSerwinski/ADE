@@ -150,7 +150,8 @@ def system_name_edit_view(request, system_id):
                   'home/system_details/system_update_form.html',
 
                   context={
-                      'form': form})
+                      'form': form,
+                      'systems': systems})
 
 
 def details_system(request, system_id):
@@ -198,6 +199,16 @@ def add_registrator(request, system_id):
                       'form': form})
 
 
+class RegistratorEditView(UpdateView):
+    model = Registrator
+    fields = ['brand', 'model', 'serial_number', 'description']
+    template_name = 'home/system_details/registrator_update_form.html'
+
+    def get_success_url(self):
+        system_id = self.object.system_types.id
+        return reverse_lazy('alarm_systems:details_system', kwargs={'system_id': system_id})
+
+
 def add_camera(request, system_id):
     form = forms.AddCameraForm(request.POST)
     print(system_id)
@@ -210,6 +221,19 @@ def add_camera(request, system_id):
                   'home/system_details/add_camera.html',
                   context={
                       'form': form})
+
+
+class CameraEditView(UpdateView):
+    model = Camera
+    fields = ['brand', 'model', 'serial_number', 'description', 'placement']
+    template_name = 'home/system_details/camera_update_form.html'
+
+    def get_success_url(self):
+        registrator_id = self.object.registrator.id
+        print(registrator_id)
+        system = Registrator.objects.get(pk=registrator_id)
+        system_id = system.system_types_id
+        return reverse_lazy('alarm_systems:details_system', kwargs={'system_id': system_id})
 
 
 def add_central(request, system_id):
@@ -227,6 +251,16 @@ def add_central(request, system_id):
                       'form': form})
 
 
+class CentralEditView(UpdateView):
+    model = Central
+    fields = ['brand', 'model', 'serial_number', 'description']
+    template_name = 'home/system_details/central_update_form.html'
+
+    def get_success_url(self):
+        system_id = self.object.system_types.id
+        return reverse_lazy('alarm_systems:details_system', kwargs={'system_id': system_id})
+
+
 def add_motionsensor(request, system_id):
     form = forms.AddMotionSensorForm(request.POST)
     if request.method == 'POST':
@@ -238,6 +272,18 @@ def add_motionsensor(request, system_id):
                   'home/system_details/add_motionsensor.html',
                   context={
                       'form': form})
+
+class MotionsensorEditView(UpdateView):
+    model = MotionSensor
+    fields = ['brand', 'model', 'serial_number', 'description', 'placement']
+    template_name = 'home/system_details/motionsensor_update_form.html'
+
+    def get_success_url(self):
+        central_id = self.object.central.id
+
+        system = Central.objects.get(pk=central_id)
+        system_id = system.system_types_id
+        return reverse_lazy('alarm_systems:details_system', kwargs={'system_id': system_id})
 
 
 def empty_system(request, system_id):

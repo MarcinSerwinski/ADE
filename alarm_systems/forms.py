@@ -14,10 +14,7 @@ class DeleteCustomerForm(forms.ModelForm):
         fields = ()
 
 
-class EditCustomerForm(forms.ModelForm):
-    class Meta:
-        model = models.Customer
-        fields = ('first_name', 'last_name', 'address', 'email', 'phone_number', 'description')
+
 
 
 class AddLocationForm(forms.ModelForm):
@@ -25,11 +22,6 @@ class AddLocationForm(forms.ModelForm):
         model = models.Location
         fields = ('name', 'address', 'description')
 
-
-class EditLocationForm(forms.ModelForm):
-    class Meta:
-        model = models.Location
-        fields = ('name', 'address', 'description')
 
 
 class AddSystemForm(forms.ModelForm):
@@ -72,3 +64,5 @@ class AddMotionSensorForm(forms.ModelForm):
     class Meta:
         model = models.MotionSensor
         fields = ('brand', 'model', 'serial_number', 'placement', 'description', 'central')
+
+

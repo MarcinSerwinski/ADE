@@ -43,7 +43,7 @@
                                 <a href="#"
                                    class="btn btn-danger rounded-10 text-light m-1">Delete</a>
                             <td class="col-1 d-flex align-items-center justify-content-center flex-wrap">
-                                <a href="#"
+                                <a href="{% url 'alarm_systems:edit_registrator' registrator.id %}"
                                    class="btn btn-dark rounded-10 text-light m-1">Edit</a>
                             <td class="col-1 d-flex align-items-center justify-content-center flex-wrap">
 
@@ -79,7 +79,7 @@
                             <a href="#"
                                class="btn btn-danger rounded-10 text-light m-1">Delete</a>
                         <td class="col-1 d-flex align-items-center justify-content-center flex-wrap">
-                        <a href="#"
+                        <a href="{% url 'alarm_systems:edit_camera' camera.id %}"
                            class="btn btn-dark rounded-10 text-light m-1">Edit</a>
                     {% endfor %}
                     </td>
@@ -124,7 +124,7 @@
                             <a href="#"
                                class="btn btn-danger rounded-10 text-light m-1">Delete</a>
                         <td class="col-1 d-flex align-items-center justify-content-center flex-wrap">
-                        <a href="#"
+                        <a href="{% url 'alarm_systems:edit_central' central.id %}"
                            class="btn btn-dark rounded-10 text-light m-1">Edit</a>
                     {% endfor %}
                     </td>
@@ -156,7 +156,7 @@
                             <a href="#"
                                class="btn btn-danger rounded-10 text-light m-1">Delete</a>
                         <td class="col-1 d-flex align-items-center justify-content-center flex-wrap">
-                        <a href="#"
+                        <a href="{% url 'alarm_systems:edit_motionsensor' motionsensor.id %}"
                            class="btn btn-dark rounded-10 text-light m-1">Edit</a>
                     {% endfor %}
                     </td>

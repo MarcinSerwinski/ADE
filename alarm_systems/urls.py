@@ -1,9 +1,13 @@
 from django.urls import path
 
 from . import views
-from .views import MainView, CustomerEditView, LocationEditView
+from .views import MainView, CustomerEditView, LocationEditView, RegistratorEditView, CentralEditView, CameraEditView, \
+    MotionsensorEditView
 
 app_name = 'alarm_systems'
+
+
+
 
 urlpatterns = [
     path('', views.home, name='home'),
@@ -35,4 +39,12 @@ urlpatterns = [
          name='add_motionsensor'),
     path('main_view/add_registrator/empty_system/<int:system_id>', views.empty_system,
          name='empty_system'),
+    path('main_view/edit_registrator/<int:pk>', RegistratorEditView.as_view(),
+         name='edit_registrator'),
+    path('main_view/edit_central/<int:pk>', CentralEditView.as_view(),
+         name='edit_central'),
+    path('main_view/edit_camera/<int:pk>', CameraEditView.as_view(),
+         name='edit_camera'),
+    path('main_view/edit_motionsensor/<int:pk>', MotionsensorEditView.as_view(),
+         name='edit_motionsensor'),
 ]
