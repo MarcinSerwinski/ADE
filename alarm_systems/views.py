@@ -357,6 +357,6 @@ def email_sending(request, customer_id):
         email_subject = request.POST['email_subject']
         email_message = request.POST['email_message']
         recipient = customer_email
-        send_mail(email_subject, email_message, settings.EMAIL_HOST_USER, [recipient], fail_silently=False)
+        send_mail(email_subject, email_message, EMAIL_HOST_USER, [recipient], fail_silently=False)
         return redirect('alarm_systems:main_view')
     return render(request, 'home/email-page.html', {"email": email})
