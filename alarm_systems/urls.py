@@ -6,9 +6,6 @@ from .views import MainView, CustomerEditView, LocationEditView, RegistratorEdit
 
 app_name = 'alarm_systems'
 
-
-
-
 urlpatterns = [
     path('', views.home, name='home'),
     path('main_view/', MainView.as_view(), name='main_view'),
@@ -59,4 +56,6 @@ urlpatterns = [
          name='delete_system'),
     path('main_view/delete_location/<int:location_id>', views.delete_location,
          name='delete_location'),
+    path('main_view/send_email/<int:customer_id>', views.email_sending,
+         name='send_email'),
 ]

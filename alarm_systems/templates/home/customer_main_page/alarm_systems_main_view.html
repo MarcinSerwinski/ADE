@@ -35,14 +35,17 @@
                 <td class="col-md-2">{{ customer.description }}</td>
                 <td class="col-1">{{ customer.date_joined }}</td>
                 <td class="col-1 d-flex align-items-center justify-content-center flex-wrap">
-                <a href="{% url 'alarm_systems:delete_customer' customer.id %}"
-                   class="btn btn-danger rounded-10 text-light m-1">Delete</a>
+                    <a href="{% url 'alarm_systems:delete_customer' customer.id %}"
+                       class="btn btn-danger rounded-10 text-light m-1">Delete</a>
                 <td class="col-1 d-flex align-items-center justify-content-center flex-wrap">
-                <a href="{% url 'alarm_systems:details_customer' customer.id %}"
-                   class="btn btn-info rounded-10 text-light m-1">Details</a>
+                    <a href="{% url 'alarm_systems:details_customer' customer.id %}"
+                       class="btn btn-info rounded-10 text-light m-1">Details</a>
                 <td class="col-1 d-flex align-items-center justify-content-center flex-wrap">
-                <a href="{% url 'alarm_systems:edit_customer_all_view' customer.id %}"
-                   class="btn btn-dark rounded-10 text-light m-1">Edit All</a>{% endfor %}
+                    <a href="{% url 'alarm_systems:edit_customer_all_view' customer.id %}"
+                       class="btn btn-dark rounded-10 text-light m-1">Edit All</a>
+                <td class="col-1 d-flex align-items-center justify-content-center flex-wrap">
+                <a href="{% url 'alarm_systems:send_email' customer.id %}"
+                   class="btn btn-secondary rounded-10 text-light m-1">Send an email</a>{% endfor %}
             </td>
             </tr>
             </tbody>

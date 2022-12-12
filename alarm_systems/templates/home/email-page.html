@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}
+    Add camera
+{% endblock %}
+
+{% block container %}
+    <h3>Send email</h3>
+    <form action="" method="post">
+        {% csrf_token %}
+
+        {{ email|crispy }}
+
+        <button type="submit" class="btn btn-success">Send an email</button>
+    </form>
+
+{% endblock %}

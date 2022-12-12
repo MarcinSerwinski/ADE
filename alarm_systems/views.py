@@ -1,11 +1,13 @@
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import PermissionRequiredMixin, LoginRequiredMixin
-from django.db.models import ProtectedError
+from django.core.mail import send_mail
+from django.conf import settings
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.views import View
 from django.views.generic import UpdateView
 
+from config.settings import EMAIL_HOST_USER
 from . import forms
 from alarm_systems.models import Customer, Location, System, SystemType, Camera, Registrator, Central, MotionSensor
 
@@ -156,7 +158,6 @@ def delete_system(request, system_id):
 def system_name_edit_view(request, system_id):
     form = forms.EditSystemNameForm(request.POST)
     systems = System.objects.filter(pk=system_id)
-
     if request.method == 'POST':
         if form.is_valid():
             for system in systems:
@@ -179,7 +180,6 @@ def details_system(request, system_id):
     systems = System.objects.filter(pk=system_id)
     registrators = Registrator.objects.filter(system_types_id=system_id)
     centrals = Central.objects.filter(system_types_id=system_id)
-
     if registrators:
         cameras = []
         for registrator in registrators:
@@ -206,7 +206,6 @@ def details_system(request, system_id):
 
 def add_registrator(request, system_id):
     form = forms.AddRegistratorForm(request.POST)
-
     if request.method == 'POST':
         if form.is_valid():
             form.instance.system_types_id = system_id
@@ -240,7 +239,6 @@ class RegistratorEditView(UpdateView):
 
 def add_camera(request, system_id):
     form = forms.AddCameraForm(request.POST)
-    print(system_id)
     if request.method == 'POST':
         if form.is_valid():
             form.save()
@@ -350,3 +348,15 @@ def empty_system(request, system_id):
                   'home/system_details/add_new_systemtype_for_empty_system.html',
                   context={
                       'systems': systems})
+
+
+def email_sending(request, customer_id):
+    email = forms.Email(request.POST)
+    customer_email = (Customer.objects.get(pk=customer_id)).email
+    if request.method == 'POST':
+        email_subject = request.POST['email_subject']
+        email_message = request.POST['email_message']
+        recipient = customer_email
+        send_mail(email_subject, email_message, settings.EMAIL_HOST_USER, [recipient], fail_silently=False)
+        return redirect('alarm_systems:main_view')
+    return render(request, 'home/email-page.html', {"email": email})

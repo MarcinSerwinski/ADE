@@ -33,13 +33,13 @@
                 <td class="col-md-2">{{ system.system_type.name }}</td>
                 <td class="col-1 d-flex align-items-center justify-content-center flex-wrap">
                 <a href="{% url 'alarm_systems:delete_system' system.id %}"
-                   class="btn btn-danger rounded-10 text-light m-1">Delete</a>
+                   class="btn btn-danger rounded-10 text-light m-1">Delete</a></td>
                 <td class="col-1 d-flex align-items-center justify-content-center flex-wrap">
                 <a href="{% url 'alarm_systems:details_system' system.id %}"
-                   class="btn btn-info rounded-10 text-light m-1">See details</a>
+                   class="btn btn-info rounded-10 text-light m-1">See details</a></td>
                 <td class="col-1 d-flex align-items-center justify-content-center flex-wrap">
                 <a href="{% url 'alarm_systems:edit_system_name' system.id %}"
-                   class="btn btn-dark rounded-10 text-light m-1">Edit All</a>{% endfor %}
+                   class="btn btn-dark rounded-10 text-light m-1">Edit All</a></td>{% endfor %}
             </td>
             </tr>
             </tbody>

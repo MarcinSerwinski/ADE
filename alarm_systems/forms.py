@@ -14,14 +14,10 @@ class DeleteCustomerForm(forms.ModelForm):
         fields = ()
 
 
-
-
-
 class AddLocationForm(forms.ModelForm):
     class Meta:
         model = models.Location
         fields = ('name', 'address', 'description')
-
 
 
 class AddSystemForm(forms.ModelForm):
@@ -66,3 +62,6 @@ class AddMotionSensorForm(forms.ModelForm):
         fields = ('brand', 'model', 'serial_number', 'placement', 'description', 'central')
 
 
+class Email(forms.Form):
+    email_subject = forms.CharField()
+    email_message = forms.CharField(max_length=200)
