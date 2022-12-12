@@ -17,7 +17,7 @@ def home(request):
 
 
 class MainView(PermissionRequiredMixin, LoginRequiredMixin, View):
-    permission_required = 'users.add_choice'
+    permission_required = 'alarm_systems.add_camera'
 
     def get(self, request):
         customers_all = Customer.objects.all().order_by('last_name')
