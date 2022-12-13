@@ -2,8 +2,8 @@ from django.contrib.auth.models import Permission
 import pytest
 from django.urls import reverse
 
-from alarm_systems.forms import AddCustomerForm, DeleteCustomerForm
-from alarm_systems.models import Customer, Location
+from alarm_systems.forms import AddCustomerForm, DeleteCustomerForm, AddSystemTypeForm
+from alarm_systems.models import Customer, Location, SystemType
 
 
 def test_home_page_get(client):
@@ -98,7 +98,7 @@ def test_details_customer_get(db, client, customer_id):
     assert "<h1>Locations listed below:</h1>" in str(response.content)
 
 
-def test_add_location_get(db, client, customer_id, location_customers_id):
+def test_add_location_get(db, client, customer_id):
     endpoint = reverse('alarm_systems:add_location_customer', kwargs={'customer_id': customer_id})
     response = client.get(endpoint)
     assert response.status_code == 200
@@ -130,14 +130,38 @@ def test_edit_location_post(db, client, customer_id, location_customers_id):
     assert Location.objects.get(name='TestLocationEditedName', address='Edited Test Location, Address 2')
 
 
+def test_details_location_get(db, client, customer_id):
+    location = Location.objects.create(customer_id=customer_id)
+    location_id = location.id
+    endpoint = reverse('alarm_systems:location_details', kwargs={'location_id': location_id})
+    response = client.get(endpoint)
+    assert response.status_code == 200
+    assert '<h1>Systems in this location</h1>' in str(response.content)
 
 
+def test_add_system_for_location_get(db, client, customer_id):
+    location = Location.objects.create(customer_id=customer_id)
+    location_id = location.id
+    endpoint = reverse('alarm_systems:add_system_for_location', kwargs={'location_id': location_id})
+    response = client.get(endpoint)
+    form_in_view = response.context['system_type_form']
+    assert response.status_code == 200
+    assert isinstance(form_in_view, AddSystemTypeForm)
 
 
+def test_add_system_for_location_post(db, client, customer_id):
+    location = Location.objects.create(customer_id=customer_id)
+    location_id = location.id
+    form_url = reverse('alarm_systems:add_system_for_location', kwargs={'location_id': location_id})
+    data_system_type_form = {'name': 'TestSystemTypeName'}
+    response = client.post(form_url, data_system_type_form)
+    assert response.status_code == 302
+    assert response.url.startswith(reverse('alarm_systems:location_details', kwargs={'location_id': location_id}))
+    assert SystemType.objects.get(name='TestSystemTypeName')
 
 
-# def test_send_email_page(db, client, customer_id):
-#     endpoint = reverse('alarm_systems:send_email', kwargs={'customer_id': customer_id})
-#     response = client.get(endpoint)
-#     assert response.status_code == 200
-#     assert '<button type="submit" class="btn btn-success">Send an email</button>' in str(response.content)
+def test_send_email_page(db, client, customer_id):
+    endpoint = reverse('alarm_systems:send_email', kwargs={'customer_id': customer_id})
+    response = client.get(endpoint)
+    assert response.status_code == 200
+    assert '<button type="submit" class="btn btn-success">Send an email</button>' in str(response.content)

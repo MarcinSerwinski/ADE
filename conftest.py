@@ -1,9 +1,9 @@
 import pytest
-
+from random import randint
 from alarm_systems.models import Customer, Location
 
 
-@pytest.fixture(scope='function')
+@pytest.fixture()
 def user(db, django_user_model):
     """Create django user"""
     yield django_user_model.objects.create_user(email='test2@admin.com', fullname='Test User', password='TestPass123')
