@@ -34,7 +34,7 @@ class MainView(PermissionRequiredMixin, LoginRequiredMixin, View):
 
 def add_customer_view(request):
     """
-    User is headed to form, which creates new customer. Data is saved in class Customer in alarm_systems.models.py
+    User is headed to form, which creates new customer. Data is saved in class Customer in alarm_systems/models.py
     Redirects to alarm_systems:main_view, when data submitted.
     """
     form = forms.AddCustomerForm(request.POST)
@@ -96,7 +96,7 @@ def details_customer(request, customer_id):
 
 def add_location(request, customer_id):
     """
-    Form to add new location for customer. Data is saved in class Location in alarm_systems.models.py
+    Form to add new location for customer. Data is saved in class Location in alarm_systems/models.py
     Redirects to alarm_systems:main_view, when form submitted.
     """
     form = forms.AddLocationForm(request.POST)
@@ -153,7 +153,9 @@ def location_details(request, location_id):
 
 def add_system_for_location(request, location_id):
     """
-    Two forms are used to
+    Two forms are used to create new system for location. Forms are using class System and class SystemType from
+    alarm_systems.models.py. System and SystemType are connected by many-to-one relation. Have to create field "name"
+    in class SystemType in prior to populate System.system_type_id with SystemType.id.
     """
     system_form = forms.AddSystemForm(request.POST)
     system_type_form = forms.AddSystemTypeForm(request.POST)
@@ -176,6 +178,11 @@ def add_system_for_location(request, location_id):
 
 
 def system_name_edit_view(request, system_id):
+    """
+    Form to edit name field of SystemType. Need to collect SystemType.name based on System.id.
+    Class System and class SystemType are from alarm_systems.models.py.
+    System and SystemType are connected by many-to-one relation.
+    """
     form = forms.EditSystemNameForm(request.POST)
     systems = System.objects.filter(pk=system_id)
     if request.method == 'POST':
@@ -197,6 +204,11 @@ def system_name_edit_view(request, system_id):
 
 
 def delete_system(request, system_id):
+    """
+    Deleting of chosen system. Need to collect SystemType.id based on System.id.
+    Class System and class SystemType are from alarm_systems.models.py.
+    System and SystemType are connected by many-to-one relation.
+    """
     if request.method == 'GET':
         system_to_be_deleted = System.objects.get(pk=system_id)
         system_type = system_to_be_deleted.system_type.id
@@ -210,6 +222,12 @@ def delete_system(request, system_id):
 
 
 def details_system(request, system_id):
+    """
+    View presents details of chosen system. Also gives user a possibility to add registrator and cameras to it or
+    centrals along with motion sensors. User is redirected to  'alarm_systems:empty_system' view, if there are no
+    records ( no registrators or centrals ).
+    """
+
     systems = System.objects.filter(pk=system_id)
     registrators = Registrator.objects.filter(system_types_id=system_id)
     centrals = Central.objects.filter(system_types_id=system_id)
@@ -238,6 +256,9 @@ def details_system(request, system_id):
 
 
 def add_registrator(request, system_id):
+    """
+    Form allows to add a new registrator to chosen system. Data is saved in class Registrator in alarm_systems/models.py
+    """
     form = forms.AddRegistratorForm(request.POST)
     if request.method == 'POST':
         if form.is_valid():
@@ -253,6 +274,9 @@ def add_registrator(request, system_id):
 
 
 def delete_registrator(request, registrator_id):
+    """
+    Registrator is erased from database, once button 'delete' is being clicked on a website.
+    """
     if request.method == 'GET':
         registrator_to_be_deleted = Registrator.objects.get(pk=registrator_id)
         system_id = registrator_to_be_deleted.system_types_id
@@ -261,6 +285,9 @@ def delete_registrator(request, registrator_id):
 
 
 class RegistratorEditView(UpdateView):
+    """
+    Form allows to edit fields from class Registrator in alarm_systems/models.py.
+    """
     model = Registrator
     fields = ['brand', 'model', 'serial_number', 'description']
     template_name = 'home/system_details/registrator_update_form.html'
@@ -271,6 +298,9 @@ class RegistratorEditView(UpdateView):
 
 
 def add_camera(request, system_id):
+    """
+    Form allows to add a new camera to chosen system. Data is saved in class Camera in alarm_systems/models.py
+    """
     form = forms.AddCameraForm(request.POST)
     if request.method == 'POST':
         if form.is_valid():
@@ -284,6 +314,9 @@ def add_camera(request, system_id):
 
 
 def delete_camera(request, camera_id):
+    """
+    Camera is erased from database, once button 'delete' is being clicked on a website.
+    """
     if request.method == 'GET':
         camera_to_be_deleted = Camera.objects.get(pk=camera_id)
         registrator = camera_to_be_deleted.registrator_id
@@ -294,6 +327,7 @@ def delete_camera(request, camera_id):
 
 
 class CameraEditView(UpdateView):
+
     model = Camera
     fields = ['brand', 'model', 'serial_number', 'description', 'placement']
     template_name = 'home/system_details/camera_update_form.html'
@@ -375,6 +409,9 @@ class MotionsensorEditView(UpdateView):
 
 
 def empty_system(request, system_id):
+    """
+    Gives User an option to create either video surveillance or alarm system types, if there's none in the system.
+    """
     systems = System.objects.filter(pk=system_id)
     return render(request,
                   'home/system_details/add_new_systemtype_for_empty_system.html',
@@ -384,7 +421,7 @@ def empty_system(request, system_id):
 
 def email_sending(request, customer_id):
     """
-    Can send email to chosen customer.
+    Can send email to chosen customer. Django Email system is used. See config.settings.py.
     """
     email = forms.Email(request.POST)
     customer_email = (Customer.objects.get(pk=customer_id)).email
