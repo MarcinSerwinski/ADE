@@ -17,6 +17,9 @@ def home(request):
 
 
 class MainView(PermissionRequiredMixin, LoginRequiredMixin, View):
+    """
+    This view generates a list of customers. Permission and login are required.
+    """
     permission_required = 'alarm_systems.add_camera'
 
     def get(self, request):
@@ -30,6 +33,10 @@ class MainView(PermissionRequiredMixin, LoginRequiredMixin, View):
 
 
 def add_customer_view(request):
+    """
+    User is headed to form, which creates new customer. Data is saved in class Customer in alarm_systems.models.py
+    Redirects to alarm_systems:main_view, when data submitted.
+    """
     form = forms.AddCustomerForm(request.POST)
     if request.method == 'POST':
         if form.is_valid():
@@ -42,6 +49,10 @@ def add_customer_view(request):
 
 
 def delete_customer_view(request, customer_id):
+    """
+    Firstly, User will be directed to a view with warning message. Data about customer will be deleted if Yes option
+    will be chosen. No option will redirect User to alarm_systems:main_view.
+    """
     form = forms.DeleteCustomerForm(request.POST)
     customer_to_be_deleted = get_object_or_404(Customer, pk=customer_id)
     if request.method == 'GET':
@@ -58,6 +69,9 @@ def delete_customer_view(request, customer_id):
 
 
 class CustomerEditView(UpdateView):
+    """
+    Form to edit customer's data. Redirect to alarm_systems:main_view, when form is submitted.
+    """
     model = Customer
     fields = ['first_name', 'last_name', 'address', 'email', 'phone_number', 'description']
     template_name = 'home/customer_main_page/customer_update_form.html'
@@ -67,6 +81,9 @@ class CustomerEditView(UpdateView):
 
 
 def details_customer(request, customer_id):
+    """
+    View directs User to details about dedicated customer.
+    """
     locations = Location.objects.filter(customer_id=customer_id).order_by('name')
     customer = get_object_or_404(Customer, pk=customer_id)
     return render(
@@ -78,6 +95,10 @@ def details_customer(request, customer_id):
 
 
 def add_location(request, customer_id):
+    """
+    Form to add new location for customer. Data is saved in class Location in alarm_systems.models.py
+    Redirects to alarm_systems:main_view, when form submitted.
+    """
     form = forms.AddLocationForm(request.POST)
     if request.method == 'POST':
         if form.is_valid():
@@ -93,6 +114,9 @@ def add_location(request, customer_id):
 
 
 def delete_location(request, location_id):
+    """
+    View is removing location and every child of it. Uses delete button in template.
+    """
     if request.method == 'GET':
         location_to_be_deleted = Location.objects.get(pk=location_id)
         location_to_be_deleted.delete()
@@ -100,6 +124,9 @@ def delete_location(request, location_id):
 
 
 class LocationEditView(UpdateView):
+    """
+    Form to edit dedicated fields of location.
+    """
     model = Location
     fields = ['name', 'address', 'description']
     template_name = 'home/customer_main_page/location_update_form.html'
@@ -110,6 +137,9 @@ class LocationEditView(UpdateView):
 
 
 def location_details(request, location_id):
+    """
+    View directs User to systems list in specific location.
+    """
     systems = System.objects.filter(location_id=location_id)
     locations = Location.objects.filter(pk=location_id)
 
@@ -122,6 +152,9 @@ def location_details(request, location_id):
 
 
 def add_system_for_location(request, location_id):
+    """
+    Two forms are used to
+    """
     system_form = forms.AddSystemForm(request.POST)
     system_type_form = forms.AddSystemTypeForm(request.POST)
     if request.method == 'POST':
@@ -140,19 +173,6 @@ def add_system_for_location(request, location_id):
                   context={
                       'system_form': system_form,
                       'system_type_form': system_type_form})
-
-
-def delete_system(request, system_id):
-    if request.method == 'GET':
-        system_to_be_deleted = System.objects.get(pk=system_id)
-        system_type = system_to_be_deleted.system_type.id
-        system_type_to_be_deleted = SystemType.objects.get(pk=system_type)
-        location_id = system_to_be_deleted.location.id
-        customer = Location.objects.get(pk=location_id)
-        customer_id = customer.customer_id
-        system_type_to_be_deleted.delete()
-        system_to_be_deleted.delete()
-        return redirect('alarm_systems:details_customer', customer_id)
 
 
 def system_name_edit_view(request, system_id):
@@ -174,6 +194,19 @@ def system_name_edit_view(request, system_id):
                   context={
                       'form': form,
                       'systems': systems})
+
+
+def delete_system(request, system_id):
+    if request.method == 'GET':
+        system_to_be_deleted = System.objects.get(pk=system_id)
+        system_type = system_to_be_deleted.system_type.id
+        system_type_to_be_deleted = SystemType.objects.get(pk=system_type)
+        location_id = system_to_be_deleted.location.id
+        customer = Location.objects.get(pk=location_id)
+        customer_id = customer.customer_id
+        system_type_to_be_deleted.delete()
+        system_to_be_deleted.delete()
+        return redirect('alarm_systems:details_customer', customer_id)
 
 
 def details_system(request, system_id):
@@ -267,7 +300,6 @@ class CameraEditView(UpdateView):
 
     def get_success_url(self):
         registrator_id = self.object.registrator.id
-        print(registrator_id)
         system = Registrator.objects.get(pk=registrator_id)
         system_id = system.system_types_id
         return reverse_lazy('alarm_systems:details_system', kwargs={'system_id': system_id})
@@ -351,6 +383,9 @@ def empty_system(request, system_id):
 
 
 def email_sending(request, customer_id):
+    """
+    Can send email to chosen customer.
+    """
     email = forms.Email(request.POST)
     customer_email = (Customer.objects.get(pk=customer_id)).email
     if request.method == 'POST':
