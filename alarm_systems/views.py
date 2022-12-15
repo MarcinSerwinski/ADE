@@ -1,7 +1,6 @@
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.auth.mixins import PermissionRequiredMixin, LoginRequiredMixin
 from django.core.mail import send_mail
-from django.conf import settings
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.views import View
@@ -9,7 +8,7 @@ from django.views.generic import UpdateView
 
 from config.settings import EMAIL_HOST_USER
 from . import forms
-from alarm_systems.models import Customer, Location, System, SystemType, Camera, Registrator, Central, MotionSensor
+from alarm_systems.models import *
 
 
 def home(request):
@@ -47,7 +46,7 @@ def add_customer_view(request):
                   'home/customer_main_page/add_customer.html',
                   context={'form': form})
 
-
+@permission_required('alarm_systems.add_camera')
 def delete_customer_view(request, customer_id):
     """
     Firstly, User will be directed to a view with warning message. Data about customer will be deleted if Yes option
@@ -67,7 +66,7 @@ def delete_customer_view(request, customer_id):
 
     return redirect('alarm_systems:main_view')
 
-
+# @permission_required('alarm_systems.add_camera')
 class CustomerEditView(UpdateView):
     """
     Form to edit customer's data. Redirect to alarm_systems:main_view, when form is submitted.
@@ -79,7 +78,7 @@ class CustomerEditView(UpdateView):
     def get_success_url(self):
         return reverse_lazy('alarm_systems:main_view')
 
-
+@permission_required('alarm_systems.add_camera')
 def details_customer(request, customer_id):
     """
     View directs User to details about dedicated customer.
@@ -275,7 +274,7 @@ def add_registrator(request, system_id):
 
 def delete_registrator(request, registrator_id):
     """
-    Registrator is erased from database, once button 'delete' is being clicked on a website.
+    Registrator is erased from database, when button 'delete' is clicked on a website.
     """
     if request.method == 'GET':
         registrator_to_be_deleted = Registrator.objects.get(pk=registrator_id)
@@ -315,7 +314,7 @@ def add_camera(request, system_id):
 
 def delete_camera(request, camera_id):
     """
-    Camera is erased from database, once button 'delete' is being clicked on a website.
+    Camera is erased from database, when button 'delete' is clicked on a website.
     """
     if request.method == 'GET':
         camera_to_be_deleted = Camera.objects.get(pk=camera_id)
@@ -327,7 +326,9 @@ def delete_camera(request, camera_id):
 
 
 class CameraEditView(UpdateView):
-
+    """
+        Form allows to edit fields from class Camera in alarm_systems/models.py.
+    """
     model = Camera
     fields = ['brand', 'model', 'serial_number', 'description', 'placement']
     template_name = 'home/system_details/camera_update_form.html'
@@ -340,6 +341,9 @@ class CameraEditView(UpdateView):
 
 
 def add_central(request, system_id):
+    """
+    Form allows to add a new central to chosen system. Data is saved in class Central in alarm_systems/models.py
+    """
     form = forms.AddCentralForm(request.POST)
     if request.method == 'POST':
         if form.is_valid():
@@ -355,6 +359,9 @@ def add_central(request, system_id):
 
 
 def delete_central(request, central_id):
+    """
+    Registrator is erased from database, when button 'delete' is clicked on a website.
+    """
     if request.method == 'GET':
         central_to_be_deleted = Central.objects.get(pk=central_id)
         system_id = central_to_be_deleted.system_types_id
@@ -363,6 +370,9 @@ def delete_central(request, central_id):
 
 
 class CentralEditView(UpdateView):
+    """
+    Form allows to edit fields from class Central in alarm_systems/models.py.
+    """
     model = Central
     fields = ['brand', 'model', 'serial_number', 'description']
     template_name = 'home/system_details/central_update_form.html'
@@ -373,6 +383,10 @@ class CentralEditView(UpdateView):
 
 
 def add_motionsensor(request, system_id):
+    """
+     Form allows to add a new motion sensor to chosen system. Data is saved in class MotionSensor
+     in alarm_systems/models.py
+    """
     form = forms.AddMotionSensorForm(request.POST)
     if request.method == 'POST':
         if form.is_valid():
@@ -386,6 +400,9 @@ def add_motionsensor(request, system_id):
 
 
 def delete_motionsensor(request, motionsensor_id):
+    """
+    Motionsensor is erased from database, when button 'delete' is clicked on a website.
+    """
     if request.method == 'GET':
         motionsensor_to_be_deleted = MotionSensor.objects.get(pk=motionsensor_id)
         central = motionsensor_to_be_deleted.central_id
@@ -396,6 +413,9 @@ def delete_motionsensor(request, motionsensor_id):
 
 
 class MotionsensorEditView(UpdateView):
+    """
+    Form allows to edit fields from class MotionSensor in alarm_systems/models.py.
+    """
     model = MotionSensor
     fields = ['brand', 'model', 'serial_number', 'description', 'placement']
     template_name = 'home/system_details/motionsensor_update_form.html'

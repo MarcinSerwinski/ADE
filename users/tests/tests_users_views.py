@@ -1,6 +1,3 @@
-from django.test import TestCase
-import pytest
-
 from django.urls import reverse
 
 

@@ -1,8 +1,6 @@
 import random
 
 from django.contrib.auth.models import Permission
-import pytest
-from django.urls import reverse
 
 from alarm_systems.forms import *
 from alarm_systems.models import *
@@ -53,7 +51,8 @@ def test_add_customer_post(db, client):
     assert Customer.objects.get(first_name='TestFirstName', description='Test1')
 
 
-def test_delete_customer_get(db, client, customer_id):
+def test_delete_customer_get(db, client, customer_id, user, user_with_permission):
+    client.force_login(user)
     endpoint = reverse('alarm_systems:delete_customer', kwargs={'customer_id': customer_id})
     response = client.get(endpoint)
     form_in_view = response.context['form']
@@ -62,7 +61,8 @@ def test_delete_customer_get(db, client, customer_id):
     assert '<button type="submit" class="btn btn-outline-danger">Yes. Delete.</button>' in str(response.content)
 
 
-def test_delete_customer_post(db, client, customer_id):
+def test_delete_customer_post(db, client, customer_id, user, user_with_permission):
+    client.force_login(user)
     form_url = reverse('alarm_systems:delete_customer', kwargs={'customer_id': customer_id})
     response = client.post(form_url)
     customer = Customer.objects.all()
@@ -70,6 +70,12 @@ def test_delete_customer_post(db, client, customer_id):
     assert response.url.startswith(reverse('alarm_systems:main_view'))
     assert len(customer) == 0
 
+def test_acces_with_no_permission_to_delete_customer(db, client, customer_id, user):
+    client.force_login(user)
+    endpoint = reverse('alarm_systems:delete_customer', kwargs={'customer_id': customer_id})
+    response = client.get(endpoint)
+    assert response.status_code == 302
+    assert response.url.startswith(reverse('users:login_view'))
 
 def test_edit_customer_get(db, client, customer_id):
     endpoint = reverse('alarm_systems:edit_customer_all_view', kwargs={'pk': customer_id})
@@ -90,7 +96,8 @@ def test_edit_customer_post(db, client, customer_id):
     assert Customer.objects.get(first_name='EditedFirstName', phone_number='edited123456789')
 
 
-def test_details_customer_get(db, client, customer_id):
+def test_details_customer_get(db, client, customer_id, user, user_with_permission):
+    client.force_login(user)
     endpoint = reverse('alarm_systems:details_customer', kwargs={'customer_id': customer_id})
     response = client.get(endpoint)
     customer_in_view = response.context['customer']
@@ -98,6 +105,12 @@ def test_details_customer_get(db, client, customer_id):
     assert response.status_code == 200
     assert "<h1>Locations listed below:</h1>" in str(response.content)
 
+def test_acces_with_no_permission_to_details_customer(db, client, customer_id, user):
+    client.force_login(user)
+    endpoint = reverse('alarm_systems:details_customer', kwargs={'customer_id': customer_id})
+    response = client.get(endpoint)
+    assert response.status_code == 302
+    assert response.url.startswith(reverse('users:login_view'))
 
 def test_add_location_get(db, client, customer_id):
     endpoint = reverse('alarm_systems:add_location_customer', kwargs={'customer_id': customer_id})
