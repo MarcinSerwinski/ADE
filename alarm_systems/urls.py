@@ -1,8 +1,7 @@
 from django.urls import path
 
 from . import views
-from .views import MainView, CustomerEditView, LocationEditView, RegistratorEditView, CentralEditView, CameraEditView, \
-    MotionsensorEditView
+from .views import *
 
 app_name = 'alarm_systems'
 

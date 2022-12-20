@@ -46,6 +46,7 @@ def add_customer_view(request):
                   'home/customer_main_page/add_customer.html',
                   context={'form': form})
 
+@login_required()
 @permission_required('alarm_systems.add_camera')
 def delete_customer_view(request, customer_id):
     """
@@ -66,7 +67,8 @@ def delete_customer_view(request, customer_id):
 
     return redirect('alarm_systems:main_view')
 
-# @permission_required('alarm_systems.add_camera')
+
+
 class CustomerEditView(UpdateView):
     """
     Form to edit customer's data. Redirect to alarm_systems:main_view, when form is submitted.
@@ -78,12 +80,13 @@ class CustomerEditView(UpdateView):
     def get_success_url(self):
         return reverse_lazy('alarm_systems:main_view')
 
+
 @permission_required('alarm_systems.add_camera')
 def details_customer(request, customer_id):
     """
     View directs User to details about dedicated customer.
     """
-    locations = Location.objects.filter(customer_id=customer_id).order_by('name')
+    locations = Location.objects.filter(customer_id=customer_id)
     customer = get_object_or_404(Customer, pk=customer_id)
     return render(
         request,
@@ -433,10 +436,12 @@ def empty_system(request, system_id):
     Gives User an option to create either video surveillance or alarm system types, if there's none in the system.
     """
     systems = System.objects.filter(pk=system_id)
+
     return render(request,
                   'home/system_details/add_new_systemtype_for_empty_system.html',
                   context={
-                      'systems': systems})
+                      'systems': systems,
+                      })
 
 
 def email_sending(request, customer_id):

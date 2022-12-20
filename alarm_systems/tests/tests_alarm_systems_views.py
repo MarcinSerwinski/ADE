@@ -105,7 +105,7 @@ def test_details_customer_get(db, client, customer_id, user, user_with_permissio
     assert response.status_code == 200
     assert "<h1>Locations listed below:</h1>" in str(response.content)
 
-def test_acces_with_no_permission_to_details_customer(db, client, customer_id, user):
+def test_acces_with_no_permission_to_details_customer(db, client, customer_id, user): #PYTANIE
     client.force_login(user)
     endpoint = reverse('alarm_systems:details_customer', kwargs={'customer_id': customer_id})
     response = client.get(endpoint)
@@ -421,7 +421,7 @@ def test_delete_motionsensor_get(db, client, system_id, create_motionsensor):
     assert len(central) == 0
 
 
-def test_empty_syystem_get(db, client, system_id):
+def test_empty_system_get(db, client, system_id):
     endpoint = reverse('alarm_systems:empty_system', kwargs={'system_id': system_id})
     response = client.get(endpoint)
     assert response.status_code == 200
