@@ -149,7 +149,7 @@ AUTH_USER_MODEL = 'users.Account'
 CRISPY_ALLOWED_TEMPLATES_PACKS = "bootstrap5"
 CRISPY_TEMPLATE_PACK = 'bootstrap5'
 
-LOGIN_REDIRECT_URL = 'alarm_systems:home'
+LOGIN_REDIRECT_URL = 'alarm_systems:main_view'
 
 LOGIN_URL = 'users:login_view'
 

@@ -1,5 +1,5 @@
 from django.contrib.auth.decorators import login_required, permission_required
-from django.contrib.auth.mixins import PermissionRequiredMixin, LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.mail import send_mail
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
@@ -15,7 +15,7 @@ def home(request):
     return render(request, 'home/home.html')
 
 
-class MainView(PermissionRequiredMixin, LoginRequiredMixin, View):
+class MainView(LoginRequiredMixin, View):
     """
     This view generates a list of customers. Permission and login are required.
     """
@@ -31,6 +31,7 @@ class MainView(PermissionRequiredMixin, LoginRequiredMixin, View):
             })
 
 
+@login_required()
 def add_customer_view(request):
     """
     User is headed to form, which creates new customer. Data is saved in class Customer in alarm_systems/models.py
@@ -46,8 +47,8 @@ def add_customer_view(request):
                   'home/customer_main_page/add_customer.html',
                   context={'form': form})
 
+
 @login_required()
-@permission_required('alarm_systems.add_camera')
 def delete_customer_view(request, customer_id):
     """
     Firstly, User will be directed to a view with warning message. Data about customer will be deleted if Yes option
@@ -68,8 +69,7 @@ def delete_customer_view(request, customer_id):
     return redirect('alarm_systems:main_view')
 
 
-
-class CustomerEditView(UpdateView):
+class CustomerEditView(LoginRequiredMixin, UpdateView):
     """
     Form to edit customer's data. Redirect to alarm_systems:main_view, when form is submitted.
     """
@@ -81,7 +81,7 @@ class CustomerEditView(UpdateView):
         return reverse_lazy('alarm_systems:main_view')
 
 
-@permission_required('alarm_systems.add_camera')
+@login_required()
 def details_customer(request, customer_id):
     """
     View directs User to details about dedicated customer.
@@ -96,6 +96,7 @@ def details_customer(request, customer_id):
             'customer': customer})
 
 
+@login_required()
 def add_location(request, customer_id):
     """
     Form to add new location for customer. Data is saved in class Location in alarm_systems/models.py
@@ -115,6 +116,7 @@ def add_location(request, customer_id):
                       'form': form})
 
 
+@login_required()
 def delete_location(request, location_id):
     """
     View is removing location and every child of it. Uses delete button in template.
@@ -125,7 +127,7 @@ def delete_location(request, location_id):
         return redirect('alarm_systems:main_view')
 
 
-class LocationEditView(UpdateView):
+class LocationEditView(LoginRequiredMixin, UpdateView):
     """
     Form to edit dedicated fields of location.
     """
@@ -138,6 +140,7 @@ class LocationEditView(UpdateView):
         return reverse_lazy('alarm_systems:details_customer', kwargs={'customer_id': customer_id})
 
 
+@login_required()
 def location_details(request, location_id):
     """
     View directs User to systems list in specific location.
@@ -153,6 +156,7 @@ def location_details(request, location_id):
             'locations': locations})
 
 
+@login_required()
 def add_system_for_location(request, location_id):
     """
     Two forms are used to create new system for location. Forms are using class System and class SystemType from
@@ -179,6 +183,7 @@ def add_system_for_location(request, location_id):
                       'system_type_form': system_type_form})
 
 
+@login_required()
 def system_name_edit_view(request, system_id):
     """
     Form to edit name field of SystemType. Need to collect SystemType.name based on System.id.
@@ -205,6 +210,7 @@ def system_name_edit_view(request, system_id):
                       'systems': systems})
 
 
+@login_required()
 def delete_system(request, system_id):
     """
     Deleting of chosen system. Need to collect SystemType.id based on System.id.
@@ -223,6 +229,7 @@ def delete_system(request, system_id):
         return redirect('alarm_systems:details_customer', customer_id)
 
 
+@login_required()
 def details_system(request, system_id):
     """
     View presents details of chosen system. Also gives user a possibility to add registrator and cameras to it or
@@ -257,6 +264,7 @@ def details_system(request, system_id):
         return redirect('alarm_systems:empty_system', system_id)
 
 
+@login_required()
 def add_registrator(request, system_id):
     """
     Form allows to add a new registrator to chosen system. Data is saved in class Registrator in alarm_systems/models.py
@@ -275,6 +283,7 @@ def add_registrator(request, system_id):
                       'form': form})
 
 
+@login_required()
 def delete_registrator(request, registrator_id):
     """
     Registrator is erased from database, when button 'delete' is clicked on a website.
@@ -286,7 +295,7 @@ def delete_registrator(request, registrator_id):
         return redirect('alarm_systems:details_system', system_id)
 
 
-class RegistratorEditView(UpdateView):
+class RegistratorEditView(LoginRequiredMixin, UpdateView):
     """
     Form allows to edit fields from class Registrator in alarm_systems/models.py.
     """
@@ -299,6 +308,7 @@ class RegistratorEditView(UpdateView):
         return reverse_lazy('alarm_systems:details_system', kwargs={'system_id': system_id})
 
 
+@login_required()
 def add_camera(request, system_id):
     """
     Form allows to add a new camera to chosen system. Data is saved in class Camera in alarm_systems/models.py
@@ -315,6 +325,7 @@ def add_camera(request, system_id):
                       'form': form})
 
 
+@login_required()
 def delete_camera(request, camera_id):
     """
     Camera is erased from database, when button 'delete' is clicked on a website.
@@ -328,7 +339,7 @@ def delete_camera(request, camera_id):
         return redirect('alarm_systems:details_system', system_id)
 
 
-class CameraEditView(UpdateView):
+class CameraEditView(LoginRequiredMixin, UpdateView):
     """
         Form allows to edit fields from class Camera in alarm_systems/models.py.
     """
@@ -343,6 +354,7 @@ class CameraEditView(UpdateView):
         return reverse_lazy('alarm_systems:details_system', kwargs={'system_id': system_id})
 
 
+@login_required()
 def add_central(request, system_id):
     """
     Form allows to add a new central to chosen system. Data is saved in class Central in alarm_systems/models.py
@@ -361,6 +373,7 @@ def add_central(request, system_id):
                       'form': form})
 
 
+@login_required()
 def delete_central(request, central_id):
     """
     Registrator is erased from database, when button 'delete' is clicked on a website.
@@ -372,7 +385,7 @@ def delete_central(request, central_id):
         return redirect('alarm_systems:details_system', system_id)
 
 
-class CentralEditView(UpdateView):
+class CentralEditView(LoginRequiredMixin, UpdateView):
     """
     Form allows to edit fields from class Central in alarm_systems/models.py.
     """
@@ -385,6 +398,7 @@ class CentralEditView(UpdateView):
         return reverse_lazy('alarm_systems:details_system', kwargs={'system_id': system_id})
 
 
+@login_required()
 def add_motionsensor(request, system_id):
     """
      Form allows to add a new motion sensor to chosen system. Data is saved in class MotionSensor
@@ -402,6 +416,7 @@ def add_motionsensor(request, system_id):
                       'form': form})
 
 
+@login_required()
 def delete_motionsensor(request, motionsensor_id):
     """
     Motionsensor is erased from database, when button 'delete' is clicked on a website.
@@ -415,7 +430,7 @@ def delete_motionsensor(request, motionsensor_id):
         return redirect('alarm_systems:details_system', system_id)
 
 
-class MotionsensorEditView(UpdateView):
+class MotionsensorEditView(LoginRequiredMixin, UpdateView):
     """
     Form allows to edit fields from class MotionSensor in alarm_systems/models.py.
     """
@@ -431,6 +446,7 @@ class MotionsensorEditView(UpdateView):
         return reverse_lazy('alarm_systems:details_system', kwargs={'system_id': system_id})
 
 
+@login_required()
 def empty_system(request, system_id):
     """
     Gives User an option to create either video surveillance or alarm system types, if there's none in the system.
@@ -441,9 +457,10 @@ def empty_system(request, system_id):
                   'home/system_details/add_new_systemtype_for_empty_system.html',
                   context={
                       'systems': systems,
-                      })
+                  })
 
 
+@permission_required('alarm_systems.add_camera')
 def email_sending(request, customer_id):
     """
     Can send email to chosen customer. Django Email system is used. See config.settings.py.
