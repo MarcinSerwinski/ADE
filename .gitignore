@@ -3,7 +3,7 @@ venv
 vscode
 **/*.pyc
 
-db3.sqlite
+db.sqlite3
 
 staticfiles
 
