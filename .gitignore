@@ -4,6 +4,7 @@ vscode
 **/*.pyc
 
 
+
 staticfiles
 
 env/.env
