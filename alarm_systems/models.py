@@ -1,6 +1,6 @@
 from django.db import models
 from django.urls import reverse
-
+from users.models import *
 
 # Create your models here.
 class Customer(models.Model):
@@ -11,6 +11,7 @@ class Customer(models.Model):
     phone_number = models.CharField(max_length=24, unique=True)
     description = models.TextField(null=True, blank=True)
     date_joined = models.DateField(auto_now_add=True)
+    user = models.ForeignKey(Account, on_delete=models.CASCADE, null=False)
 
 
 class Location(models.Model):

@@ -1,3 +1,4 @@
+from django.contrib.auth import get_user
 from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.mail import send_mail
@@ -19,10 +20,9 @@ class MainView(LoginRequiredMixin, View):
     """
     This view generates a list of customers. Permission and login are required.
     """
-    permission_required = 'alarm_systems.add_camera'
 
     def get(self, request):
-        customers_all = Customer.objects.all().order_by('last_name')
+        customers_all = Customer.objects.filter(user_id=request.user)
         return render(
             request,
             'home/customer_main_page/alarm_systems_main_view.html',
@@ -37,9 +37,12 @@ def add_customer_view(request):
     User is headed to form, which creates new customer. Data is saved in class Customer in alarm_systems/models.py
     Redirects to alarm_systems:main_view, when data submitted.
     """
+
     form = forms.AddCustomerForm(request.POST)
+    user = request.user
     if request.method == 'POST':
         if form.is_valid():
+            form.instance.user = user
             form.save()
             return redirect('alarm_systems:main_view')
 

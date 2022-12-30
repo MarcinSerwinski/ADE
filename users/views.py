@@ -45,7 +45,7 @@ def login_view(request):
             if user is not None:
                 if user.is_active:
                     login(request, user)
-                    return redirect('alarm_systems:home')
+                    return redirect('alarm_systems:main_view')
     else:
         form = forms.LoginForm(request)
 

@@ -18,8 +18,8 @@ def user_with_permission(user):
 
 
 @pytest.fixture()
-def create_customer():
-    return Customer.objects.create()
+def create_customer(user):
+    return Customer.objects.create(user=user)
 
 
 @pytest.fixture()
