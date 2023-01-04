@@ -46,7 +46,6 @@ INSTALLED_APPS = [
     'users.apps.UsersConfig',
 
     # 3rd party apps:
-    'phonenumber_field',
     'crispy_forms',
     'crispy_bootstrap5',
 
