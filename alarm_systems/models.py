@@ -1,7 +1,7 @@
 from django.db import models
 from django.urls import reverse
 from users.models import *
-
+from django.contrib.auth import get_user_model
 # Create your models here.
 class Customer(models.Model):
     first_name = models.CharField(max_length=100)
@@ -11,7 +11,7 @@ class Customer(models.Model):
     phone_number = models.CharField(max_length=24, unique=True)
     description = models.TextField(null=True, blank=True)
     date_joined = models.DateField(auto_now_add=True)
-    user = models.ForeignKey(Account, on_delete=models.CASCADE, null=False)
+    user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, null=False)
 
 
 class Location(models.Model):
