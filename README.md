@@ -22,3 +22,7 @@ $ source venv/bin/activate
 * Install the dependencies:
 ```
 (venv)$ pip install -r requirements.txt
+```
+
+## Unit tests
+![Coverage](static/images/readme/coverage.png)
