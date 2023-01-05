@@ -74,3 +74,5 @@ class Central(models.Model):
     serial_number = models.CharField(max_length=100, unique=True)
     description = models.TextField(blank=True, null=True)
     system_types = models.ForeignKey('System', on_delete=models.CASCADE)
+    def __str__(self):
+        return self.serial_number
