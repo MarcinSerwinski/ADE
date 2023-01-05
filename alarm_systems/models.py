@@ -14,6 +14,8 @@ class Customer(models.Model):
     user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, null=False)
 
 
+
+
 class Location(models.Model):
     name = models.CharField(max_length=100)
     address = models.CharField(max_length=255)
@@ -44,13 +46,15 @@ class Camera(models.Model):
     registrator = models.ForeignKey('Registrator', on_delete=models.CASCADE)
 
 
+
 class Registrator(models.Model):
     brand = models.CharField(max_length=100)
     model = models.CharField(max_length=100)
     serial_number = models.CharField(max_length=100, unique=True)
     description = models.TextField(blank=True, null=True)
     system_types = models.ForeignKey('System', on_delete=models.CASCADE)
-
+    def __str__(self):
+        return self.serial_number
 
 class MotionSensor(models.Model):
     location_types = [(1, 'Zewnętrzny'),

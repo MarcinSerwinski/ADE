@@ -408,6 +408,7 @@ def add_motionsensor(request, system_id):
      in alarm_systems/models.py
     """
     form = forms.AddMotionSensorForm(request.POST)
+    form.fields['central'].queryset = Customer.objects.filter(user=request.user)
     if request.method == 'POST':
         if form.is_valid():
             form.save()
